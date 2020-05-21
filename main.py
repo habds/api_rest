@@ -9,7 +9,7 @@ def inicio():
 
 @app.route('/metodo_pago')
 def metodoPago():
-    respuesta=select("select descripcion from forma_pago")
+    respuesta=coneccion()
     return jsonify(respuesta)
 
 if __name__ == '__main__':
