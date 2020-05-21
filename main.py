@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from conexion import *
+from conexion import coneccion
 # from bdfalsa import productos
 app = Flask(__name__)
 
