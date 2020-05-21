@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from conexion import coneccion
+from conexion import coneccion,select
 # from bdfalsa import productos
 app = Flask(__name__)
 
@@ -9,7 +9,7 @@ def inicio():
 
 @app.route('/metodo_pago')
 def metodoPago():
-    respuesta=coneccion()
+    respuesta=select()
     return jsonify(respuesta)
 
 if __name__ == '__main__':
