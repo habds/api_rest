@@ -1,6 +1,7 @@
 import sys, os
 sys.path.append(os.getcwd())
-from conexion import DataBaseConexion
+from conexion2 import DataBaseConexion
+import mysql.connector
 class Ciudad(): 
 
    def __init__(self,id = 0,nombre = '', idRegion=0): 
@@ -22,12 +23,32 @@ class Ciudad():
       return self.nombre
 
    def getCiudad(self):
-      self.db.cursor.execute(f'select id, nombre, idRegion from ciudad where nombre="{self.nombre}"')
-      obj = self.db.cursor.fetchone()
-      setId(f'{obj[0]}')
-      setNombre(f'{obj[1]}')
-      setId(f'{obj[2]}')
+      try:
+         self.db.cursor.execute(f'select id, nombre, idRegion from ciudad where nombre="{self.nombre}"')
+         obj = self.db.cursor.fetchone()
+         self.setId(f'{obj[0]}')
+         self.setNombre(f'{obj[1]}')
+         self.setId(f'{obj[2]}')
+         return True
+      except mysql.connector.Error as err:
+         print(err)
+         return False
 
+   def getCiudades(self):
+      self.db.cursor.execute('select id, nombre, idRegion from ciudad')
+      data = self.db.cursor.fetchall()
+      dicDatos = {}
+      listaDatos = []
+
+      for registro in data:
+         dicDatos = {"id": registro[0], "nombre": registro[1], 'idRegion': registro[2]}
+         listaDatos.append(dicDatos)
+      result = {'Message': 'Mostrando Ciudades', 'Ciudades': listaDatos}
+      return result
+
+   def dic(self):
+      diccionario = {'id': self.id, 'nombre': self.nombre, 'idregion': self.idRegion}
+      return diccionario
 
    def __str__(self):
       return str(self.id), str(self.nombre)
