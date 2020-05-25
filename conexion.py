@@ -21,7 +21,7 @@ def select():
         conexion.close()
     return respuesta
 
-def coneccion():
+def conexion():
     conexion = psycopg2.connect(host="ec2-50-17-21-170.compute-1.amazonaws.com", database="dah4ovgnh5u7uj", user="scpuhirqcifnzq", password="ac1f425c77c31e67ae108b18f58baeb86b6a25e185b48382ef6f8876b1f5bcca")
     
     return conexion
