@@ -16,9 +16,14 @@ def inicio():
 def ciudad(nombre_ciudad):
     ciu = Ciudad(nombre=nombre_ciudad)
     if ciu.getCiudad():
-        return jsonify({'message': 'Successful', 'Ciudad': ciu.dic()})
+        return jsonify({'message': 'Exitosamente', 'Ciudad': ciu.dic()})
     else:
         return jsonify({"message":'Error'})
+
+@app.route('/ciudad/', methods=['GET'])
+def ciudades():
+    ciu = Ciudad()
+    return jsonify(ciu.getCiudades())
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
