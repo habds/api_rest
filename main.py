@@ -1,7 +1,6 @@
 import sys, os
 sys.path.append(os.getcwd())
 from flask import Flask, jsonify
-from conexion import coneccion,select
 from Clases.Ciudad import Ciudad
 # from bdfalsa import productos
 app = Flask(__name__)
