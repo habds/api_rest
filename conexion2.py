@@ -11,4 +11,4 @@ class DataBaseConexion():
         
     def getData(self, query):
         self.db.cursor.execute(query)
-        return self.db.cursor.fetchall()
+        return self.db.cursor.fetchall()    
