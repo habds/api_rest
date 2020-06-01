@@ -16,6 +16,9 @@ class Comuna():
    def setNombre(self, nombre):
       self.nombre = nombre
  
+   def setIdProvincia(self, idProvincia):
+      self.idProvincia = idProvincia
+
    def getId(self):
       return self.id
  
@@ -26,10 +29,11 @@ class Comuna():
       try:
          self.db.cursor.execute(f'select id, nombre, idProvincia from comuna where nombre="{self.nombre}"')
          obj = self.db.cursor.fetchone()
-         self.setId(f'{obj[0]}')
-         self.setNombre(f'{obj[1]}')
-         self.idProvincia = obj[2]
-         return True
+         if obj != None:
+            self.setId(f'{obj[0]}')
+            self.setNombre(f'{obj[1]}')
+            self.idProvincia = obj[2]
+            return True
       except mysql.connector.Error as err:
          print(err)
          return False
@@ -47,15 +51,33 @@ class Comuna():
       return result
 
 
-    def setComuna(self):
-        try:
-            self.db.cursor.execute(f'insert into comuna(nombre, idPrincia) values("{self.nombre}",{self.idProvincia})')
-            self.db.cursor.execute("commit;")
-            self.getCategoriaNombre()
-            return True
-        except mysql.connector.Error as err:
-            print("Ha ocurrido un error: {}".format(err))
-            return  False
+   def setComuna(self):
+      try:
+         self.db.cursor.execute(f'insert into comuna(nombre, idPrincia) values("{self.nombre}",{self.idProvincia})')
+         self.db.cursor.execute("commit;")
+         self.getComuna()
+         return True
+      except mysql.connector.Error as err:
+         print("Ha ocurrido un error: {}".format(err))
+         return  False
+
+   def updateComuna(self):
+      try:
+         self.db.cursor.execute(f"update comuna set nombre='{self.nombre}', idProvincia={self.idProvincia} where id={self.id}")
+         self.db.cursor.execute("commit;")
+      except mysql.connector.Error as err:
+         print(err)
+         return False
+
+   def deleteComuna(self):
+      try:
+         self.db.cursor.execute(f"delete from comuna where nombre='{self.nombre}'")
+         self.db.cursor.execute("commit;")
+         return True
+      except mysql.connector.Error as err:
+         print(f"Ha ocurrido un error: {err}")
+         return False
+
 
    def dic(self):
       diccionario = {'id': self.id, 'nombre': self.nombre, 'idProvincia': self.idProvincia}
