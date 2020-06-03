@@ -53,7 +53,7 @@ class Comuna():
 
    def setComuna(self):
       try:
-         self.db.cursor.execute(f'insert into comuna(nombre, idPrincia) values("{self.nombre}",{self.idProvincia})')
+         self.db.cursor.execute(f'insert into comuna(nombre, idProvincia) values("{self.nombre}",{self.idProvincia})')
          self.db.cursor.execute("commit;")
          self.getComuna()
          return True
