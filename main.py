@@ -4,6 +4,7 @@ from flask import Flask, jsonify, request
 from Clases.Comuna import Comuna
 from Clases.Region import Region
 from Clases.Producto import Producto
+from Clases.Categoria import Categoria
 # from bdfalsa import productos
 app = Flask(__name__)
 
@@ -166,6 +167,56 @@ def deleteProducto(id_producto):
             return jsonify({'message':'No ha sido posible eliminar el producto'})
     else:
         return jsonify({'message':'No se encontro ningun producto para eliminar'})
+
+#------------------------------------Fin Producto-------------------------------------------------------------
+
+#------------------------------------Categoria-------------------------------------------------------------
+
+@app.route('/categoria/<string:nombre_categoria>', methods=['GET'])
+def categoria(nombre_categoria):
+    cat = Categoria(nombre=nombre_categoria)
+    if cat.getCategoria():
+        return jsonify({'message': 'Exitosamente', 'Region': cat.dic()})
+    else:
+        return jsonify({"message":f'No existe ninguna region con el nombre {nombre_categoria}'})
+
+@app.route('/categoria/', methods=['GET'])
+def categorias():
+    cat = Categoria()
+    return jsonify(cat.getCategoria())
+
+@app.route('/categoria/', methods=['POST'])
+def addCategoria():
+    cat = Categoria(nombre=request.json['nombre'])
+    if cat.setCategoria():
+        return jsonify({'message':'Categoria creada exitosamente', 'Categoria': reg.dic()})
+    else:
+        return jsonify({'message':'Ha ocurrido un error al intentar crear la Categoria'})
+
+@app.route('/categoria/<string:nombre_categoria>', methods=['PUT'])
+def updateCategoria(nombre_categoria):
+    cat = Categoria(nombre=nombre_categoria)
+    if cat.getCategoria():
+        cat.setNombre(request.json['nombre'])
+        if cat.updateCategoria():
+            return jsonify({'message':'Categoria Actualizada Exitosamente', 'Categoria':cat.dic()})
+        else:
+            return jsonify({'message':'Ha ocurrido un error al intentar actualizar la Region'})
+
+
+@app.route('/categoria/<string:nombre_categoria>', methods=['DELETE'])
+def deleteCategoria(nombre_categoria):
+    cat = Categoria(nombre=nombre_categoria)
+    if cat.getCategoria():
+        if cat.deleteCategoria():
+            return jsonify({
+                'message': 'La categoria fue eliminada exitosamente',
+                'Categoria': cat.dic()
+            })
+        else:
+            return jsonify({'message':'No ha sido posible eliminar la categoria'})
+    else:
+        return jsonify({'message':'No se encontro ninguna categoria para eliminar'})
 
 if __name__ == '__main__':
  app.run(debug=True)
