@@ -1,7 +1,11 @@
+import sys, os
+
 from conexion2 import DataBaseConexion
+
 import mysql.connector
 
-class Region(): 
+class Region():
+
    def __init__(self,id = 0,nombre = '',codigo = ''): 
       self.id = id
       self.nombre = nombre
