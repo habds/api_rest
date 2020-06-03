@@ -3,6 +3,7 @@ sys.path.append(os.getcwd())
 from flask import Flask, jsonify, request
 from Clases.Comuna import Comuna
 from Clases.Region import Region
+from Clases.Producto import Producto
 # from bdfalsa import productos
 app = Flask(__name__)
 
@@ -114,6 +115,57 @@ def deleteRegion(nombre_region):
             return jsonify({'message':'No ha sido posible eliminar la region'})
     else:
         return jsonify({'message':'No se encontro ninguna region para eliminar'})
+
+#------------------------------------Producto-------------------------------------------------------------
+
+@app.route('/producto/<int:id_producto>', methods=['GET'])
+def producto(id_producto):
+    prod = Producto(id=id_producto)
+    if prod.getProducto():
+        return jsonify({'message': 'Exitosamente', 'Producto': prod.dic()})
+    else:
+        return jsonify({"message":f'No existe ningun producto con el nombre {prod.nombre}'})
+
+@app.route('/producto/', methods=['GET'])
+def productos():
+    prod = Producto()
+    return jsonify(prod.getProductos())
+
+@app.route('/producto/', methods=['POST'])
+def addProducto():
+    prod = Producto(nombre=request.json['nombre'], descripcion=request.json['descripcion'], precio=request.json['precio'], idcategoria=request.json['idcategoria'])
+    if prod.setProducto():
+        return jsonify({'message':'Producto creado exitosamente', 'Producto': prod.dic()})
+    else:
+        return jsonify({'message':'Ha ocurrido un error al intentar crear el Producto'})
+
+@app.route('/producto/<int:id_producto>', methods=['PUT'])
+def updateProducto(id_producto):
+    prod = Producto(id=id_producto)
+    if prod.getProducto():
+        prod.setNombre(request.json['nombre'])
+        prod.setDescripcion(request.json['descripcion'])
+        prod.setPrecio(request.json['precio'])
+        prod.idcategoria = request.json['idcategoria']
+        if prod.updateProducto():
+            return jsonify({'message':'Producto Actualizado Exitosamente', 'Producto':reg.dic()})
+        else:
+            return jsonify({'message':'Ha ocurrido un error al intentar actualizar el Producto'})
+
+
+@app.route('/producto/<int:id_producto>', methods=['DELETE'])
+def deleteProducto(id_producto):
+    prod = Producto(id=id_producto)
+    if prod.getProducto():
+        if prod.deleteProducto():
+            return jsonify({
+                'message': 'El producto fue eliminado exitosamente',
+                'Producto': prod.dic()
+            })
+        else:
+            return jsonify({'message':'No ha sido posible eliminar el producto'})
+    else:
+        return jsonify({'message':'No se encontro ningun producto para eliminar'})
 
 if __name__ == '__main__':
  app.run(debug=True)
