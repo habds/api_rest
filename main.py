@@ -5,6 +5,7 @@ from Clases.Comuna import Comuna
 from Clases.Region import Region
 from Clases.Producto import Producto
 from Clases.Categoria import Categoria
+from Clases.Provincia import Provincia
 # from bdfalsa import productos
 app = Flask(__name__)
 
@@ -218,6 +219,15 @@ def deleteCategoria(nombre_categoria):
             return jsonify({'message':'No ha sido posible eliminar la categoria'})
     else:
         return jsonify({'message':'No se encontro ninguna categoria para eliminar'})
+
+#------------------------------------------------------------------
+#----------------------provincia----------------------------------------
+
+@app.route('/provincia/', methods=['GET'])
+def provincias():
+    pro = Provincia()
+    return jsonify(pro.getProvincias())
+
 
 if __name__ == '__main__':
  app.run(debug=True)

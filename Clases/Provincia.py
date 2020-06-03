@@ -1,3 +1,5 @@
+import sys, os
+sys.path.append(os.getcwd())
 from conexion2 import DataBaseConexion
 import mysql.connector
 
@@ -28,24 +30,25 @@ class Provincia():
 
    def getProvincia(self):
       try:
-         self.db.cursor.execute(f'select id, nombre from provincia where nombre="{self.nombre}"')
+         self.db.cursor.execute(f'select id, nombre,idRegion from provincia where nombre="{self.nombre}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
             self.setNombre(f'{obj[1]}')
+            self.setIdregion(f'{obj[2]}')
             return True
       except mysql.connector.Error as err:
          print(err)
          return False
 
    def getProvincias(self):
-      self.db.cursor.execute('select id, nombre from provincia')
+      self.db.cursor.execute('select id, nombre, idRegion from provincia')
       data = self.db.cursor.fetchall()
       dicDatos = {}
       listaDatos = []
 
       for registro in data:
-         dicDatos = {"id": registro[0], "nombre": registro[1]}
+         dicDatos = {"id": registro[0], "nombre": registro[1], 'idRegion':registro[2]}
          listaDatos.append(dicDatos)
       result = {'Message': 'Mostrando Provincias', 'Provincias': listaDatos}
       return result
@@ -63,7 +66,7 @@ class Provincia():
 
    def updateProvincia(self):
       try:
-         self.db.cursor.execute(f"update provincia set nombre='{self.nombre}' where nombre={self.nombre}")
+         self.db.cursor.execute(f"update provincia set nombre='{self.nombre}', idRegion='{self.idRegion}' where nombre={self.id}")
          self.db.cursor.execute("commit;")
       except mysql.connector.Error as err:
          print(err)
@@ -80,9 +83,9 @@ class Provincia():
 
 
    def dic(self):
-      diccionario = {'id': self.id, 'nombre': self.nombre}
+      diccionario = {'id': self.id, 'nombre': self.nombre, 'idRegion':self.idRegion}
       return diccionario
 
  
    def __str__(self):
-      return str(self.id), str(self.nombre), str(self.idRegion)
+      return str(self.id), self.nombre, str(self.idRegion)
