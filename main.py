@@ -222,11 +222,38 @@ def deleteCategoria(nombre_categoria):
 
 #------------------------------------------------------------------
 #----------------------provincia----------------------------------------
+@app.route('/provincia/<string:nombre_provincia>', methods=['GET'])
+def provincia(nombre_provincia):
+    pro = Provincia(nombre=nombre_provincia)
+    if pro.getProvincia():
+        return jsonify({'message': 'Exitosamente', 'Provincia': pro.dic()})
+    else:
+        return jsonify({"message":f'No existe ninguna provincia con el nombre {nombre_provincia}'})
 
 @app.route('/provincia/', methods=['GET'])
 def provincias():
     pro = Provincia()
     return jsonify(pro.getProvincias())
+
+@app.route('/provincia/', methods=['POST'])
+def addProvincia():
+    pro = Provincia(nombre=request.json['nombre'], idRegion=request.json['idRegion'])
+    if pro.setProvincia():
+        return jsonify({'message':'Provincia creada exitosamente', 'Provincia': pro.dic()})
+    else:
+        return jsonify({'message':'Ha ocurrido un error al intentar crear la Provincia'})
+
+@app.route('/provincia/<string:nombre_provincia>', methods=['PUT'])
+def updateProvincia(nombre_region):
+    pro = Provincia(nombre=nombre_region)
+    if pro.getProvincia():
+        pro.setNombre(request.json['nombre'])
+        pro.setIdregion(request.json['idRegion'])
+        if pro.updateProvincia():
+            return jsonify({'message':'Provincia Actualizada Exitosamente', 'Provincia':reg.dic()})
+        else:
+            return jsonify({'message':'Ha ocurrido un error al intentar actualizar la Provincia'})
+
 
 
 if __name__ == '__main__':
