@@ -33,7 +33,7 @@ class Categoria():
          print(err)
          return False
 
-   def getCategoria(self):
+   def getCategorias(self):
       self.db.cursor.execute('select id, nombre from categoria')
       data = self.db.cursor.fetchall()
       dicDatos = {}
