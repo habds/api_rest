@@ -28,6 +28,10 @@ class Producto():
  
    def getPrecio(self):
       return self.precio
+
+
+
+
  
    def __str__(self):
       return str(self.id), str(self.nombre), str(self.descripcion), str(self.precio)

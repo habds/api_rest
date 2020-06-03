@@ -1,6 +1,6 @@
 import sys, os
 sys.path.append(os.getcwd())
-from Clases.conexion2 import DataBaseConexion
+from conexion2 import DataBaseConexion
 import mysql.connector
 class Comuna(): 
 
