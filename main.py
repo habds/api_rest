@@ -150,7 +150,7 @@ def updateProducto(id_producto):
         prod.setPrecio(request.json['precio'])
         prod.idcategoria = request.json['idcategoria']
         if prod.updateProducto():
-            return jsonify({'message':'Producto Actualizado Exitosamente', 'Producto':reg.dic()})
+            return jsonify({'message':'Producto Actualizado Exitosamente', 'Producto':prod.dic()})
         else:
             return jsonify({'message':'Ha ocurrido un error al intentar actualizar el Producto'})
 
@@ -190,7 +190,7 @@ def categorias():
 def addCategoria():
     cat = Categoria(nombre=request.json['nombre'])
     if cat.setCategoria():
-        return jsonify({'message':'Categoria creada exitosamente', 'Categoria': reg.dic()})
+        return jsonify({'message':'Categoria creada exitosamente', 'Categoria': cat.dic()})
     else:
         return jsonify({'message':'Ha ocurrido un error al intentar crear la Categoria'})
 
