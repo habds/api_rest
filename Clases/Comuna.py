@@ -53,7 +53,7 @@ class Comuna():
 
    def setComuna(self):
       try:
-         self.db.cursor.execute(f'insert into comuna(nombre, idPrincia) values("{self.nombre}",{self.idProvincia})')
+         self.db.cursor.execute(f'insert into comuna(nombre, idProvincia) values("{self.nombre}",{self.idProvincia})')
          self.db.cursor.execute("commit;")
          self.getComuna()
          return True
@@ -65,6 +65,7 @@ class Comuna():
       try:
          self.db.cursor.execute(f"update comuna set nombre='{self.nombre}', idProvincia={self.idProvincia} where id={self.id}")
          self.db.cursor.execute("commit;")
+         return True
       except mysql.connector.Error as err:
          print(err)
          return False
