@@ -1,3 +1,5 @@
+import sys, os
+sys.path.append(os.getcwd())
 import mysql.connector
 
 class DataBaseConexion():
