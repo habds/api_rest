@@ -12,7 +12,7 @@ class Tienda():
       self.telefono = telefono
       self.idComuna = idComuna
       self.idTipoTienda = idTipoTienda
-      self.db = DataBaseConexion
+      self.db = DataBaseConexion()
  
    def setId(self, id):
       self.id = id
@@ -56,7 +56,7 @@ class Tienda():
    def getIdtipotienda(self):
       return self.idTipoTienda
 
-   def getTienda(self):
+   def selectTienda(self):
       try:
          self.db.cursor.execute(f'select id, nombre, direccion, email, telefono, idcomuna, idtipotienda from tienda where nombre="{self.nombre}"')
          obj = self.db.cursor.fetchone()
@@ -105,13 +105,13 @@ class Tienda():
 
    def createTienda(self):
       try:
-         self.db.cursor.execute(f'insert into tipo_tienda(nombre,direccion,email,telefono,idcomuna,idtipotienda) values("{self.nombre}","{self.direccion}","{self.email}","{self.telefono}","{self.idComuna}","{self.idTipoTienda}")')
+         self.db.cursor.execute(f'insert into tienda(nombre,direccion,email,telefono,idcomuna,idtipotienda) values("{self.nombre}","{self.direccion}","{self.email}","{self.telefono}","{self.idComuna}","{self.idTipoTienda}")')
          self.db.cursor.execute("commit;")
-         self.getTienda()
+         self.selectTienda()
          return True
       except mysql.connector.Error as err:
          print("Ha ocurrido un error: {}".format(err))
-         return  False
+         return False
 
    def updateTiendaTipo(self):
       try:
@@ -122,9 +122,9 @@ class Tienda():
          print(err)
          return False
 
-   def deleteTiendaTipo(self):
+   def deleteTienda(self):
       try:
-         self.db.cursor.execute(f"delete from tipo_tienda where codigo='{self.codigo}'")
+         self.db.cursor.execute(f"delete from tipo_tienda where codigo='{self.nombre}'")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -133,7 +133,7 @@ class Tienda():
 
 
    def dic(self):
-      diccionario = {'id': self.id, 'codigo': self.codigo, 'descripcion':self.descripcion}
+      diccionario = {'id': self.id, 'nombre': self.nombre, 'direccion':self.direccion, 'email':self.direccion, 'telefono':self.telefono, 'idComuna':self.idComuna, 'idTipoTienda':self.idTipoTienda}
       return diccionario
 
  

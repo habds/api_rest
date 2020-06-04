@@ -54,7 +54,7 @@ class Categoria():
          return True
       except mysql.connector.Error as err:
          print("Ha ocurrido un error: {}".format(err))
-         return  False
+         return False
 
    def updateCategoria(self):
       try:

@@ -340,15 +340,15 @@ def tiendas():
     tie = Tienda()
     return jsonify(tie.selectTiendas())
 
-@app.route('/tiendatipo/', methods=['POST'])
+@app.route('/tienda/', methods=['POST'])
 def addTienda():
-    tie = TiendaTipo(codigo=request.json['codigo'], descripcion=request.json['descripcion'])
-    if tie.createTiendaTipo():
-        return jsonify({'message':'Tipo de tienda creada exitosamente', 'TiendaTipo': tie.dic()})
+    tie = Tienda(nombre=request.json['nombre'], direccion=request.json['direccion'], email=request.json['email'], telefono=request.json['telefono'],idComuna=request.json['idComuna'], idTipoTienda=request.json['idTipoTienda'])
+    if tie.createTienda():
+        return jsonify({'message':'Tipo de tienda creada exitosamente', 'Tienda': tie.dic()})
     else:
         return jsonify({'message':'Ha ocurrido un error al intentar crear el Tipo de tienda'})
 
-@app.route('/tiendatipo/<string:pCodigo>', methods=['PUT'])
+@app.route('/tienda/<string:pCodigo>', methods=['PUT'])
 def updateTienda(pCodigo):
     tie = TiendaTipo(codigo=pCodigo)
     if tie.getTiendaTipo():
@@ -359,7 +359,7 @@ def updateTienda(pCodigo):
         else:
             return jsonify({'message':'Ha ocurrido un error al intentar actualizar la Tienda tipo'})
 
-@app.route('/tiendatipo/<string:pCodigo>', methods=['DELETE'])
+@app.route('/tienda/<string:pCodigo>', methods=['DELETE'])
 def deleteTienda(pCodigo):
     tie = TiendaTipo(codigo=pCodigo)
     if tie.getTiendaTipo():
