@@ -185,7 +185,7 @@ def categoria(nombre_categoria):
 @app.route('/categoria/', methods=['GET'])
 def categorias():
     cat = Categoria()
-    return jsonify(cat.getCategoria())
+    return jsonify(cat.getCategorias())
 
 @app.route('/categoria/', methods=['POST'])
 def addCategoria():
