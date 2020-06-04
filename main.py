@@ -151,9 +151,9 @@ def addProducto():
     else:
         return jsonify({'message':'Ha ocurrido un error al intentar crear el Producto'})
 
-@app.route('/producto/<int:id_producto>', methods=['PUT'])
-def updateProducto(id_producto):
-    prod = Producto(id=id_producto)
+@app.route('/producto/<string:nombre_producto>', methods=['PUT'])
+def updateProducto(nombre_producto):
+    prod = Producto(nombre=nombre_producto)
     if prod.getProducto():
         prod.setNombre(request.json['nombre'])
         prod.setDescripcion(request.json['descripcion'])
@@ -165,9 +165,9 @@ def updateProducto(id_producto):
             return jsonify({'message':'Ha ocurrido un error al intentar actualizar el Producto'})
 
 
-@app.route('/producto/<int:id_producto>', methods=['DELETE'])
-def deleteProducto(id_producto):
-    prod = Producto(id=id_producto)
+@app.route('/producto/<string:nombre_producto>', methods=['DELETE'])
+def deleteProducto(nombre_producto):
+    prod = Producto(nombre=nombre_producto)
     if prod.getProducto():
         if prod.deleteProducto():
             return jsonify({

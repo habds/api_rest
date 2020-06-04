@@ -38,7 +38,7 @@ class Producto():
 
    def getProducto(self):
       try:
-         self.db.cursor.execute(f'select id, nombre, descripcion, precio, idcategoria from producto where id={self.id}')
+         self.db.cursor.execute(f'select id, nombre, descripcion, precio, idcategoria from producto where nombre="{self.nombre}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -78,6 +78,7 @@ class Producto():
       try:
          self.db.cursor.execute(f"update producto set nombre='{self.nombre}', descripcion='{self.descripcion}', precio={self.precio}, idcategoria={self.idcategoria} where id={self.id}")
          self.db.cursor.execute("commit;")
+         return True
       except mysql.connector.Error as err:
          print(err)
          return False
