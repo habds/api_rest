@@ -8,6 +8,7 @@ from Clases.Categoria import Categoria
 from Clases.Provincia import Provincia
 from Clases.TiendaTipo import TiendaTipo
 from Clases.Tienda import Tienda
+from Clases.Rol import Rol
 from Clases.Sexo import Sexo
 
 
@@ -383,6 +384,55 @@ def deleteTienda(pNombre):
 
 #-------------------------fin tienda---------------------------------------------------------
 
+#-------------------------------------rol-------------------------------------------------------
+@app.route('/rol/<string:pNombre>', methods=['GET'])
+def rol(pNombre):
+    rol = Rol(nombre=pNombre)
+    if rol.searchRol():
+        return jsonify({'message': 'Exitosamente', 'Tienda': rol.dic()})
+    else:
+        return jsonify({"message":f'No existe ningun Rol con el nombre {pNombre}'})
+
+@app.route('/rol/', methods=['GET'])
+def roles():
+    rol = Rol()
+    return jsonify(rol.selectRoles())
+
+@app.route('/rol/', methods=['POST'])
+def addRol():
+    rol = Rol(nombre=request.json['nombre'], codigo=request.json['codigo'])
+    if rol.insertRol():
+        return jsonify({'message':'Rol creado exitosamente', 'Rol': rol.dic()})
+    else:
+        return jsonify({'message':'Ha ocurrido un error al intentar crear el Rol'})
+
+@app.route('/rol/<string:pNombre>', methods=['PUT'])
+def updateRol(pNombre):
+    rol = Rol(nombre=pNombre)
+    if rol.searchRol():
+        rol.setNombre(request.json['nombre'])
+        rol.setCodigo(request.json['codigo'])
+        
+        if rol.updateRol():
+            return jsonify({'message':'Rol actualizado Exitosamente', 'Rol':rol.dic()})
+        else:
+            return jsonify({'message':'Ha ocurrido un error al intentar actualizar Rol'})
+    else:
+        return jsonify({'message':'No encontro nada...'})
+
+@app.route('/rol/<string:pNombre>', methods=['DELETE'])
+def deleteRol(pNombre):
+    rol = Rol(nombre=pNombre)
+    if rol.searchRol():
+        if rol.deleteRol():
+            return jsonify({
+                'message': 'El Rol fue eliminado exitosamente','rol': rol.dic()
+            })
+        else:
+            return jsonify({'message':'No ha sido posible eliminar el Rol'})
+    else:
+        return jsonify({'message':'No se encontro el rol'})
+#---------------------------------------fin rol -------------------------------------------------
 #------------------------------------Sexo-------------------------------------------------------------
 
 @app.route('/sexo/<string:nombre_sexo>', methods=['GET'])
