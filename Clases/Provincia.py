@@ -41,6 +41,19 @@ class Provincia():
          print(err)
          return False
 
+   def getProvinciaId(self):
+      try:
+         self.db.cursor.execute(f'select id, nombre,idRegion from provincia where id="{self.id}"')
+         obj = self.db.cursor.fetchone()
+         if obj != None:
+            self.setId(f'{obj[0]}')
+            self.setNombre(f'{obj[1]}')
+            self.setIdregion(f'{obj[2]}')
+            return True
+      except mysql.connector.Error as err:
+         print(err)
+         return False
+
    def getProvincias(self):
       self.db.cursor.execute('select id, nombre, idRegion from provincia')
       data = self.db.cursor.fetchall()

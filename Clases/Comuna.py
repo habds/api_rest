@@ -82,12 +82,12 @@ class Comuna():
    
    def filtrarProvincia(self, provinciaid):
       try:
-         self.db.cursor.execute(f"select nombre, idProvincia from comuna where idProvincia = {provinciaid}")
+         self.db.cursor.execute(f"select id, nombre, idProvincia from comuna where idProvincia = {provinciaid}")
          data = self.db.cursor.fetchall()
          dicDatos = {}
          listaDatos = []
          provinciaope = Provincia(id=provinciaid)
-         provinciaope.getProvincia()
+         provinciaope.getProvinciaId()
          for registro in data:
             dicDatos = {"id": registro[0], "nombre": registro[1], 'idProvincia': registro[2]}
             listaDatos.append(dicDatos)

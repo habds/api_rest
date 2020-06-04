@@ -28,8 +28,10 @@ def comuna(nombre_comuna):
 @app.route('/comuna/', methods=['GET'])
 def comunas():
     com = Comuna()
-    if request.args.get('provincia'):
-        return jsonify(com.filtrarProvincia(request.args('provincia')))
+    nombre_p = request.args.get('provincia')
+    if nombre_p:
+        diccionarioope = com.filtrarProvincia(nombre_p)
+        return jsonify(diccionarioope)
     else:
         return jsonify(com.getComunas())
 
