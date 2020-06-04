@@ -260,13 +260,13 @@ def deleteProvincia(nombre_provincia):
     if pro.getProvincia():
         if pro.deleteProvincia():
             return jsonify({
-                'message': 'La region fue eliminada exitosamente',
-                'Region': pro.dic()
+                'message': 'La provincia fue eliminada exitosamente',
+                'Provincia': pro.dic()
             })
         else:
-            return jsonify({'message':'No ha sido posible eliminar la region'})
+            return jsonify({'message':'No ha sido posible eliminar la provincia'})
     else:
-        return jsonify({'message':'No se encontro ninguna region para eliminar'})
+        return jsonify({'message':'No se encontro ninguna provincia para eliminar'})
 
 if __name__ == '__main__':
  app.run(debug=True)
