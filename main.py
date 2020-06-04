@@ -244,8 +244,8 @@ def addProvincia():
         return jsonify({'message':'Ha ocurrido un error al intentar crear la Provincia'})
 
 @app.route('/provincia/<string:nombre_provincia>', methods=['PUT'])
-def updateProvincia(nombre_region):
-    pro = Provincia(nombre=nombre_region)
+def updateProvincia(nombre_provincia):
+    pro = Provincia(nombre=nombre_provincia)
     if pro.getProvincia():
         pro.setNombre(request.json['nombre'])
         pro.setIdregion(request.json['idRegion'])
