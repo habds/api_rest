@@ -250,7 +250,7 @@ def updateProvincia(nombre_provincia):
         pro.setNombre(request.json['nombre'])
         pro.setIdregion(request.json['idRegion'])
         if pro.updateProvincia():
-            return jsonify({'message':'Provincia Actualizada Exitosamente', 'Provincia':reg.dic()})
+            return jsonify({'message':'Provincia Actualizada Exitosamente', 'Provincia':pro.dic()})
         else:
             return jsonify({'message':'Ha ocurrido un error al intentar actualizar la Provincia'})
 
