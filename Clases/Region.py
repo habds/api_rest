@@ -82,6 +82,7 @@ class Region():
       try:
          self.db.cursor.execute(f"update region set nombre='{self.nombre}', code='{self.codigo}' where id={self.id}")
          self.db.cursor.execute("commit;")
+         return True
       except mysql.connector.Error as err:
          print(err)
          return False
