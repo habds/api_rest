@@ -6,6 +6,8 @@ from Clases.Region import Region
 from Clases.Producto import Producto
 from Clases.Categoria import Categoria
 from Clases.Provincia import Provincia
+from Clases.TiendaTipo import TiendaTipo
+
 # from bdfalsa import productos
 app = Flask(__name__)
 
@@ -271,6 +273,55 @@ def deleteProvincia(nombre_provincia):
             return jsonify({'message':'No ha sido posible eliminar la region'})
     else:
         return jsonify({'message':'No se encontro ninguna region para eliminar'})
+#-----------------fin provincia----------------------------------
 
+#-----------------Tienda Tipo---------------------------------------
+@app.route('/tiendatipo/<string:pCodigo>', methods=['GET'])
+def tiendaTipo(pCodigo):
+    tie = TiendaTipo(codigo=pCodigo)
+    if tie.getTiendaTipo():
+        return jsonify({'message': 'Exitosamente', 'Tienda Tipo': tie.dic()})
+    else:
+        return jsonify({"message":f'No existe ninguna provincia con el nombre {pCodigo}'})
+
+@app.route('/tiendatipo/', methods=['GET'])
+def tiendaTipos():
+    tie = TiendaTipo()
+    return jsonify(tie.selectTiendaTipos())
+
+@app.route('/tiendatipo/', methods=['POST'])
+def addTiendaTipo():
+    tie = TiendaTipo(codigo=request.json['codigo'], descripcion=request.json['descripcion'])
+    if tie.createTiendaTipo():
+        return jsonify({'message':'Tipo de tienda creada exitosamente', 'TiendaTipo': tie.dic()})
+    else:
+        return jsonify({'message':'Ha ocurrido un error al intentar crear el Tipo de tienda'})
+
+@app.route('/tiendatipo/<string:pCodigo>', methods=['PUT'])
+def updateTiendaTipo(pCodigo):
+    tie = TiendaTipo(codigo=pCodigo)
+    if tie.getTiendaTipo():
+        tie.setCodigo(request.json['codigo'])
+        tie.setDescripcion(request.json['descripcion'])
+        if tie.updateTiendaTipo():
+            return jsonify({'message':'Tienda tipo Actualizada Exitosamente', 'Tienda Tipo':tie.dic()})
+        else:
+            return jsonify({'message':'Ha ocurrido un error al intentar actualizar la Tienda tipo'})
+
+@app.route('/tiendatipo/<string:pCodigo>', methods=['DELETE'])
+def deleteTiendaTipo(pCodigo):
+    tie = TiendaTipo(codigo=pCodigo)
+    if tie.getTiendaTipo():
+        if tie.deleteTiendaTipo():
+            return jsonify({
+                'message': 'El Tipo de tienda fue eliminada exitosamente','Tienda Tipo': tie.dic()
+            })
+        else:
+            return jsonify({'message':'No ha sido posible eliminar el tipo de tienda '})
+    else:
+        return jsonify({'message':'No se encontro ninguna Tipo de tienda para eliminar'})
+
+
+#---------------------fin Tienda Tipo-----------------
 if __name__ == '__main__':
  app.run(debug=True)

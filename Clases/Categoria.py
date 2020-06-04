@@ -83,3 +83,4 @@ class Categoria():
 
    def __str__(self):
       return str(self.id), str(self.nombre)
+
