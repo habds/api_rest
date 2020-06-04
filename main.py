@@ -8,6 +8,7 @@ from Clases.Categoria import Categoria
 from Clases.Provincia import Provincia
 from Clases.TiendaTipo import TiendaTipo
 from Clases.Tienda import Tienda
+from Clases.Sexo import Sexo
 
 
 # from bdfalsa import productos
@@ -381,6 +382,55 @@ def deleteTienda(pNombre):
         return jsonify({'message':'No se encontro ninguna tienda para eliminar'})
 
 #-------------------------fin tienda---------------------------------------------------------
+
+#------------------------------------Sexo-------------------------------------------------------------
+
+@app.route('/sexo/<string:nombre_sexo>', methods=['GET'])
+def sexo(nombre_sexo):
+    sex = Sexo(nombre=nombre_sexo)
+    if sex.getSexo():
+        return jsonify({'message': 'Exitosamente', 'Sexo': sex.dic()})
+    else:
+        return jsonify({"message":f'No existe ningun sexo con el nombre {nombre_sexo}'})
+
+@app.route('/sexo/', methods=['GET'])
+def sexos():
+    sex = Sexo()
+    return jsonify(sex.getSexos())
+
+@app.route('/sexo/', methods=['POST'])
+def addSexo():
+    sex = Sexo(nombre=request.json['nombre'])
+    if sex.setSexo():
+        return jsonify({'message':'Sexo creado exitosamente', 'Sexo': sex.dic()})
+    else:
+        return jsonify({'message':'Ha ocurrido un error al intentar crear el Sexo'})
+
+@app.route('/sexo/<string:nombre_sexo>', methods=['PUT'])
+def updateSexo(nombre_sexo):
+    sex = Sexo(nombre=nombre_sexo)
+    if sex.getSexo():
+        sex.setNombre(request.json['nombre'])
+        if sex.updateSexo():
+            return jsonify({'message':'Sexo Actualizado Exitosamente', 'Sexo':sex.dic()})
+        else:
+            return jsonify({'message':'Ha ocurrido un error al intentar actualizar el Sexo'})
+
+
+@app.route('/sexo/<string:nombre_sexo>', methods=['DELETE'])
+def deleteSexo(nombre_sexo):
+    sex = Sexo(nombre=nombre_sexo)
+    if sex.getSexo():
+        if sex.deleteSexo():
+            return jsonify({
+                'message': 'El sexo fue eliminado exitosamente',
+                'Sexo': sex.dic()
+            })
+        else:
+            return jsonify({'message':'No ha sido posible eliminar el Sexo'})
+    else:
+        return jsonify({'message':'No se encontro ningun Sexo para eliminar'})
+
 
 if __name__ == '__main__':
  app.run(debug=True)
