@@ -73,7 +73,7 @@ class Provincia():
          print(err)
          return False
 
-   def deleteCategoria(self):
+   def deleteProvincia(self):
       try:
          self.db.cursor.execute(f"delete from provincia where nombre='{self.nombre}'")
          self.db.cursor.execute("commit;")

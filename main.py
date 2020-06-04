@@ -254,7 +254,19 @@ def updateProvincia(nombre_provincia):
         else:
             return jsonify({'message':'Ha ocurrido un error al intentar actualizar la Provincia'})
 
-
+@app.route('/provincia/<string:nombre_provincia>', methods=['DELETE'])
+def deleteProvincia(nombre_provincia):
+    pro = Provincia(nombre=nombre_provincia)
+    if pro.getProvincia():
+        if pro.deleteProvincia():
+            return jsonify({
+                'message': 'La region fue eliminada exitosamente',
+                'Region': pro.dic()
+            })
+        else:
+            return jsonify({'message':'No ha sido posible eliminar la region'})
+    else:
+        return jsonify({'message':'No se encontro ninguna region para eliminar'})
 
 if __name__ == '__main__':
  app.run(debug=True)
