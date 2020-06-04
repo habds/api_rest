@@ -115,7 +115,7 @@ class Tienda():
 
    def updateTiendaTipo(self):
       try:
-         self.db.cursor.execute(f"update tipo_tienda set codigo='{self.codigo}', descripcion='{self.descripcion}' where id={self.id}")
+         self.db.cursor.execute(f"update tienda set nombre='{self.nombre}', direccion='{self.direccion}', email='{self.email}', telefono='{self.telefono}', idcomuna={self.idComuna}, idtipotienda={self.idTipoTienda} where id={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -124,7 +124,7 @@ class Tienda():
 
    def deleteTienda(self):
       try:
-         self.db.cursor.execute(f"delete from tipo_tienda where codigo='{self.nombre}'")
+         self.db.cursor.execute(f"delete from tienda where nombre='{self.nombre}'")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
