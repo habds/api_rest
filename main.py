@@ -28,8 +28,10 @@ def comuna(nombre_comuna):
 @app.route('/comuna/', methods=['GET'])
 def comunas():
     com = Comuna()
-    print(request.args.get('pentakill'))
-    return jsonify(com.getComunas())
+    if request.args.get('provincia'):
+        return jsonify(com.filtrarProvincia(request.args('provincia')))
+    else:
+        return jsonify(com.getComunas())
 
 @app.route('/comuna/', methods=['POST'])
 def addComuna():
@@ -260,13 +262,13 @@ def deleteProvincia(nombre_provincia):
     if pro.getProvincia():
         if pro.deleteProvincia():
             return jsonify({
-                'message': 'La provincia fue eliminada exitosamente',
-                'Provincia': pro.dic()
+                'message': 'La region fue eliminada exitosamente',
+                'Region': pro.dic()
             })
         else:
-            return jsonify({'message':'No ha sido posible eliminar la provincia'})
+            return jsonify({'message':'No ha sido posible eliminar la region'})
     else:
-        return jsonify({'message':'No se encontro ninguna provincia para eliminar'})
+        return jsonify({'message':'No se encontro ninguna region para eliminar'})
 
 if __name__ == '__main__':
  app.run(debug=True)

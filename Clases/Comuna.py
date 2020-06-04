@@ -2,6 +2,7 @@ import sys, os
 sys.path.append(os.getcwd())
 from conexion2 import DataBaseConexion
 import mysql.connector
+from Clases.Provincia import Provincia
 class Comuna(): 
 
    def __init__(self,id = 0,nombre = '', idProvincia=0): 
@@ -75,6 +76,23 @@ class Comuna():
          self.db.cursor.execute(f"delete from comuna where nombre='{self.nombre}'")
          self.db.cursor.execute("commit;")
          return True
+      except mysql.connector.Error as err:
+         print(f"Ha ocurrido un error: {err}")
+         return False
+   
+   def filtrarProvincia(self, provinciaid):
+      try:
+         self.db.cursor.execute(f"select nombre, idProvincia from comuna where idProvincia = {provinciaid}")
+         data = self.db.cursor.fetchall()
+         dicDatos = {}
+         listaDatos = []
+         provinciaope = Provincia(id=provinciaid)
+         provinciaope.getProvincia()
+         for registro in data:
+            dicDatos = {"id": registro[0], "nombre": registro[1], 'idProvincia': registro[2]}
+            listaDatos.append(dicDatos)
+         result = {'Message': f'Mostrando Comunas de {provinciaope.nombre}', 'Comunas': listaDatos}
+         return result   
       except mysql.connector.Error as err:
          print(f"Ha ocurrido un error: {err}")
          return False
