@@ -7,6 +7,8 @@ from Clases.Producto import Producto
 from Clases.Categoria import Categoria
 from Clases.Provincia import Provincia
 from Clases.TiendaTipo import TiendaTipo
+from Clases.Tienda import Tienda
+
 
 # from bdfalsa import productos
 app = Flask(__name__)
@@ -323,5 +325,54 @@ def deleteTiendaTipo(pCodigo):
 
 
 #---------------------fin Tienda Tipo-----------------
+
+#-----------------------Tienda-------------------------------------------------------------
+@app.route('/tienda/<string:pNombre>', methods=['GET'])
+def tienda(pNombre):
+    tie = Tienda(nombre=pNombre)
+    if tie.getTienda():
+        return jsonify({'message': 'Exitosamente', 'Tienda': tie.dic()})
+    else:
+        return jsonify({"message":f'No existe ninguna provincia con el nombre {pNombre}'})
+
+@app.route('/tienda/', methods=['GET'])
+def tiendas():
+    tie = Tienda()
+    return jsonify(tie.selectTiendas())
+
+@app.route('/tiendatipo/', methods=['POST'])
+def addTienda():
+    tie = TiendaTipo(codigo=request.json['codigo'], descripcion=request.json['descripcion'])
+    if tie.createTiendaTipo():
+        return jsonify({'message':'Tipo de tienda creada exitosamente', 'TiendaTipo': tie.dic()})
+    else:
+        return jsonify({'message':'Ha ocurrido un error al intentar crear el Tipo de tienda'})
+
+@app.route('/tiendatipo/<string:pCodigo>', methods=['PUT'])
+def updateTienda(pCodigo):
+    tie = TiendaTipo(codigo=pCodigo)
+    if tie.getTiendaTipo():
+        tie.setCodigo(request.json['codigo'])
+        tie.setDescripcion(request.json['descripcion'])
+        if tie.updateTiendaTipo():
+            return jsonify({'message':'Tienda tipo Actualizada Exitosamente', 'Tienda Tipo':tie.dic()})
+        else:
+            return jsonify({'message':'Ha ocurrido un error al intentar actualizar la Tienda tipo'})
+
+@app.route('/tiendatipo/<string:pCodigo>', methods=['DELETE'])
+def deleteTienda(pCodigo):
+    tie = TiendaTipo(codigo=pCodigo)
+    if tie.getTiendaTipo():
+        if tie.deleteTiendaTipo():
+            return jsonify({
+                'message': 'El Tipo de tienda fue eliminada exitosamente','Tienda Tipo': tie.dic()
+            })
+        else:
+            return jsonify({'message':'No ha sido posible eliminar el tipo de tienda '})
+    else:
+        return jsonify({'message':'No se encontro ninguna Tipo de tienda para eliminar'})
+
+#-------------------------fin tienda---------------------------------------------------------
+
 if __name__ == '__main__':
  app.run(debug=True)
