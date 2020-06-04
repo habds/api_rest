@@ -241,7 +241,11 @@ def provincia(nombre_provincia):
 @app.route('/provincia/', methods=['GET'])
 def provincias():
     pro = Provincia()
-    return jsonify(pro.getProvincias())
+    regionid = request.args.get('region')
+    if regionid:
+        return jsonify(pro.filtroRegion(regionid))
+    else:
+        return jsonify(pro.getProvincias())
 
 @app.route('/provincia/', methods=['POST'])
 def addProvincia():

@@ -41,6 +41,20 @@ class Region():
          print(err)
          return False
 
+   def getRegionId(self):
+      try:
+         self.db.cursor.execute(f'select id, nombre, code from region where id="{self.id}"')
+         obj = self.db.cursor.fetchone()
+         if obj != None:
+            self.setId(f'{obj[0]}')
+            self.setNombre(f'{obj[1]}')
+            self.setCodigo(obj[2])
+            return True
+      except mysql.connector.Error as err:
+         print(err)
+         return False
+
+
    def getRegiones(self):
       self.db.cursor.execute('select id, nombre, code from region')
       data = self.db.cursor.fetchall()

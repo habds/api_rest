@@ -1,6 +1,7 @@
 import sys, os
 sys.path.append(os.getcwd())
 from conexion2 import DataBaseConexion
+from Clases.Region import Region
 import mysql.connector
 
 class Provincia(): 
@@ -41,6 +42,24 @@ class Provincia():
          print(err)
          return False
 
+   def filtroRegion(self, region_id):
+      try:
+         self.db.cursor.execute(f'select id, nombre, idRegion from provincia where idRegion = {region_id}')
+      
+         data = self.db.cursor.fetchall()
+         dicDatos = {}
+         listaDatos = []
+         regionope = Region(id=region_id)
+         regionope.getRegionId()
+         for registro in data:
+            dicDatos = {"id": registro[0], "nombre": registro[1], 'idRegion':registro[2]}
+            listaDatos.append(dicDatos)
+         result = {'Message': f'Mostrando Provincias de {regionope.nombre}', 'Provincias': listaDatos}
+         return result
+      except mysql.connector.Error as err:
+         print(err)
+         return None
+
    def getProvinciaId(self):
       try:
          self.db.cursor.execute(f'select id, nombre,idRegion from provincia where id="{self.id}"')
@@ -55,7 +74,7 @@ class Provincia():
          return False
 
    def getProvincias(self):
-      self.db.cursor.execute('select id, nombre, idRegion from provincia')
+      self.db.cursor.execute('select id, nombre, idregion from provincia')
       data = self.db.cursor.fetchall()
       dicDatos = {}
       listaDatos = []
