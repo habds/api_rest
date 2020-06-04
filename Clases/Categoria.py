@@ -45,7 +45,6 @@ class Categoria():
       result = {'Message': 'Mostrando Categoria', 'Categoria': listaDatos}
       return result
 
-
    def setCategoria(self):
       try:
          self.db.cursor.execute(f'insert into categoria(nombre) values("{self.nombre}")')
