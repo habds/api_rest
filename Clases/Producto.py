@@ -100,4 +100,4 @@ class Producto():
 
  
    def __str__(self):
-      return str(self.id), str(self.nombre), str(self.descripcion), str(self.precio)
+      return str(self.id), self.nombre, self.descripcion, str(self.precio)

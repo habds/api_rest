@@ -10,20 +10,114 @@ from Clases.TiendaTipo import TiendaTipo
 from Clases.Tienda import Tienda
 from Clases.Rol import Rol
 from Clases.Sexo import Sexo
+from Clases.Persona import Persona
+from Clases.Login_detail import Login_detail
+from Clases.Login import Login
+
+import jwt
+import datetime
+from functools import wraps
 
 
+
+usuario="matias"
+contraseña ="password"
 # from bdfalsa import productos
 app = Flask(__name__)
 
 app.config['JSON_SORT_KEYS'] = False
 app.config['JSON_AS_ASCII'] = False
+app.config['SECRET_KEY'] = 'palabrasecretabb:v'
 
-@app.route('/')
-def inicio():
-    return 'hola' #jsonify(productos)
+
+#------------------------------------------LOGIN-----------------------------------------------
+@app.route('/login/<int:pId>', methods=['GET'])
+def login(pId):
+    log = Login(id=pId)
+    if log.searchLogin:
+        return jsonify({'message': 'Exitosamente', 'Login': log.dic()})
+    else:
+        return jsonify({"message":f'No existe ningun sexo con el nombre {pId}'})
+
+@app.route('/login/', methods=['GET'])
+def logins():
+    log = Login()
+    return jsonify(log.selectLogin())
+
+@app.route('/login/', methods=['POST'])
+def addLogin():
+    log = Login(username=request.json['username'],password=request.json['password']
+                ,idPersona=request.json['idPersona'],idRol=request.json['idRol'])
+    if log.insertLogin():
+        return jsonify({'message':'Datos paraa logearse creado exitosamente', 'Login': log.dic()})
+    else:
+        return jsonify({'message':'Ha ocurrido un error al intentar crear los datos para logearse'})
+
+@app.route('/login/<int:pId>', methods=['PUT'])
+def updateLogin(pId):
+    log = Login(id=pId)
+    if log.searchLogin():
+        log.setUsername(request.json['username'])
+        log.setPassword(request.json['password'])
+        log.setIdpersona(request.json['idPeersona'])
+        log.setIdrol(request.json['idRol'])
+        if log.updateLogin():
+            return jsonify({'message':'Datos de login actualizados exitosamente', 'login':log.dic()})
+        else:
+            return jsonify({'message':'Ha ocurrido un error al intentar actualizar los datos de login'})
+
+
+@app.route('/login/<int:pId>', methods=['DELETE'])
+def deleteLogin(pId):
+    log = Login(id=pId)
+    if log.searchLogin():
+        if log.deleteLogin():
+            return jsonify({
+                'message': 'Los datos para logearse fueron eliminados exitosamente',
+                'Login': log.dic()
+            })
+        else:
+            return jsonify({'message':'No ha sido posible eliminar los datos para logearse'})
+    else:
+        return jsonify({'message':'No se encontro ningun dato para eliminar con el id:'+id})
+
+
+@app.route('/token' , methods=['POST'])
+def obtenerToken():
+    log = Login()
+    #auth = request.authorization
+    log.username = request.json['username']
+    log.password = request.json['password']
+
+    credenciales = log.searchLogin()
+    if credenciales:
+        token = jwt.encode({'user' : log.username, 'exp' : datetime.datetime.utcnow()+datetime.timedelta(minutes=30) }, app.config['SECRET_KEY'])
+        return jsonify({'token' : token.decode('UTF-8')})
+    else:
+        return jsonify({'messege' : 'Error con la validación'})
+
+def token_required(ƒ):
+    @wraps(ƒ)
+    def decorated(*args, **kwargs):
+        token = request.args.get('token')
+        if not token:
+            return jsonify({'messege' : 'Falta el token'})
+        else:
+            try:
+                tokenD = jwt.decode(token, app.config['SECRET_KEY'])
+                return ƒ(*args, **kwargs)
+            except:
+                return jsonify({'messege' : 'EL token es invalido'})
+    return decorated
+
+#--------------------------------------- FIN login-------------------------------------------------
+
+
+
 
 #------------------------------------Comunas-------------------------------------------------------------
 @app.route('/comuna/<string:nombre_comuna>', methods=['GET'])
+
 def comuna(nombre_comuna):
     com = Comuna(nombre=nombre_comuna)
     if com.getComuna():
@@ -31,7 +125,9 @@ def comuna(nombre_comuna):
     else:
         return jsonify({"message":f'No existe ninguna comuna con el nombre {nombre_comuna}'})
 
+
 @app.route('/comuna/', methods=['GET'])
+@token_required
 def comunas():
     com = Comuna()
     nombre_p = request.args.get('provincia')
@@ -42,6 +138,7 @@ def comunas():
         return jsonify(com.getComunas())
 
 @app.route('/comuna/', methods=['POST'])
+#@token_required
 def addComuna():
     com = Comuna(nombre=request.json['nombre'], idProvincia=request.json['idProvincia'])
     if com.setComuna():
@@ -480,6 +577,119 @@ def deleteSexo(nombre_sexo):
             return jsonify({'message':'No ha sido posible eliminar el Sexo'})
     else:
         return jsonify({'message':'No se encontro ningun Sexo para eliminar'})
+
+#--------------------------------------- FIN SEXO-------------------------------------------------
+
+#------------------------------------------------LOGIN_DETAIL-------------------------------------
+@app.route('/login_detalle/<int:pId_logged>', methods=['GET'])
+def login_detail(pId_logged):
+    log_d = Login_detail(id_logged=pId_logged)
+    if log_d.searchLogin_detail():
+        return jsonify({'message': 'Exitosamente', 'Detalle de login': log_d.dic()})
+    else:
+        return jsonify({"message":f'No existe ningun detalle de login con el id_logged {pId_logged}'})
+
+@app.route('/login_detalle/', methods=['GET'])
+def login_details():
+    log_d = Login_detail()
+    return jsonify(log_d.selectLogin_detail())
+
+@app.route('/login_detalle/', methods=['POST'])
+def addLogin_detail():
+    log_d = Login_detail(id_logged=request.json['id_logged'], f_ultimo_login=request.json['f_ultimo_login'], tiempo_log=request.json['tiempo_log'])
+    if log_d.insertLogin_detail():
+        return jsonify({'message':'Detalle de login creado exitosamente', 'Login_detail': log_d.dic()})
+    else:
+        return jsonify({'message':'Ha ocurrido un error al intentar crear el detalle de login'})
+
+@app.route('/login_detalle/<int:pId>', methods=['PUT'])
+def updateLogin_detail(pId):
+    log_d = Login_detail(id=pId)
+    if log_d.searchLogin_detail():
+        log_d.setId(request.json['id'])
+        if log_d.updateLogin_detail():
+            return jsonify({'message':'Detalle de login Actualizado Exitosamente', 'Login_detail':log_d.dic()})
+        else:
+            return jsonify({'message':'Ha ocurrido un error al intentar actualizar el detalle de login'})
+
+
+@app.route('/login_detalle/<int:pId>', methods=['DELETE'])
+def deleteLogin_detail(pId):
+    log_d = Login_detail(id=pId)
+    if log_d.searchLogin_detail():
+        if log_d.deleteLogin_detail():
+            return jsonify({
+                'message': 'El detalle de login fue eliminado exitosamente',
+                'Login_detail': log_d.dic()
+            })
+        else:
+            return jsonify({'message':'No ha sido posible eliminar el detalle de login'})
+    else:
+        return jsonify({'message':'No se encontro ningun detalle de login para eliminar'})
+
+#-------------------------------------------------FIN LOGIN_DETAIL---------------------------------
+
+#-------------------------------------   PERSONA --------------------------------------------------
+
+@app.route('/persona/<string:pRun>', methods=['GET'])
+def persona(pRun):
+    per = Persona(run=pRun)
+    if per.searchPersona():
+        return jsonify({'message': 'Persona encontrada exitosamente', 'Persona': per.dic()})
+    else:
+        return jsonify({"message":f'No existe ninguna persona con el nombre {pRun}'})
+
+@app.route('/persona/', methods=['GET'])
+def personas():
+    per = Persona()
+    return jsonify(per.selectPersonas())
+
+@app.route('/persona/', methods=['POST'])
+def addPersona():
+    per = Persona(run=request.json['run'], dv=request.json['dv'],nombres=request.json['nombre'], a_paterno=request.json['a_paterno'],a_materno=request.json['a_materno'],
+                  idGenero=request.json['idgenero'],fono=request.json['n_contacto'], fecha_n=request.json['fecha_n'],email=request.json['email'], idComuna=request.json['idcomuna'])
+    if per.insertPersona():
+        return jsonify({'message':'Persona agregada exitosamente', 'Persona': per.dic()})
+    else:
+        return jsonify({'message':'Ha ocurrido un error al intentar agregar la persona'})
+
+@app.route('/persona/<string:pRun>', methods=['PUT'])
+def updatePersona(pRun):
+    per = Persona(run=pRun)
+    if per.searchPersona():
+        per.setRun(request.json['run'])
+        per.setDv(request.json['dv'])
+        per.setNombres(request.json['nombre'])
+        per.setA_paterno(request.json['a_paterno'])
+        per.setA_materno(request.json['a_materno'])
+        per.setIdgenero(request.json['idgenero'])
+        per.setFono(request.json['n_contacto'])
+        per.setFecha_n(request.json['fecha_n'])
+        per.setEmail(request.json['email'])
+        per.setIdcomuna(request.json['idcomuna'])
+        if per.updatePersona():
+            return jsonify({'message':'Datos de la persona actualizados Exitosamente', 'Persona':per.dic()})
+        else:
+            return jsonify({'message':'Ha ocurrido un error al intentar actualizar los datos de la persona'})
+    else:
+        return jsonify({'message':'No encontro nada...'})
+
+@app.route('/persona/<string:pRun>', methods=['DELETE'])
+def deletePersona(pRun):
+    per = Persona(run=pRun)
+    if per.searchPersona():
+        if per.deletePersona():
+            return jsonify({
+                'message': 'Los datos de la persona fueron eliminados exitosamente','Persona': per.dic()
+            })
+        else:
+            return jsonify({'message':'No ha sido posible eliminar los datos de la persona'})
+    else:
+        return jsonify({'message':'No se encontraron datos de la persona'})
+
+
+#---------------------------------------FIN PERSONA ---------------------------------------------------
+
 
 
 if __name__ == '__main__':
