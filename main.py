@@ -34,7 +34,7 @@ app.config['SECRET_KEY'] = 'palabrasecretabb:v'
 @app.route('/login/<int:pId>', methods=['GET'])
 def login(pId):
     log = Login(id=pId)
-    if log.searchLogin:
+    if log.searchPersonaById():
         return jsonify({'message': 'Exitosamente', 'Login': log.dic()})
     else:
         return jsonify({"message":f'No existe ningun sexo con el nombre {pId}'})
@@ -79,7 +79,7 @@ def deleteLogin(pId):
         else:
             return jsonify({'message':'No ha sido posible eliminar los datos para logearse'})
     else:
-        return jsonify({'message':'No se encontro ningun dato para eliminar con el id:'+id})
+        return jsonify({f'message':'No se encontro ningun dato para eliminar con el id: {pId}'})
 
 
 @app.route('/token' , methods=['POST'])
@@ -127,7 +127,7 @@ def comuna(nombre_comuna):
 
 
 @app.route('/comuna/', methods=['GET'])
-@token_required
+#@token_required
 def comunas():
     com = Comuna()
     nombre_p = request.args.get('provincia')
