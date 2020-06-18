@@ -99,15 +99,15 @@ def obtenerToken():
 def token_required(ƒ):
     @wraps(ƒ)
     def decorated(*args, **kwargs):
-        token = request.args.get('token')
-        if not token:
-            return jsonify({'messege' : 'Falta el token'})
-        else:
-            try:
-                tokenD = jwt.decode(token, app.config['SECRET_KEY'])
-                return ƒ(*args, **kwargs)
-            except:
-                return jsonify({'messege' : 'EL token es invalido'})
+        try:
+            token = request.json['token'] 
+            tokenD = jwt.decode(token, app.config['SECRET_KEY'])
+            print(tokenD)
+            return ƒ(*args, **kwargs)
+        except jwt.DecodeError:
+            return jsonify({'message' : 'Token Invalido'})
+        except Exception as e:
+            return jsonify({'message' : 'No hay Token'})
     return decorated
 
 #--------------------------------------- FIN login-------------------------------------------------
@@ -127,7 +127,7 @@ def comuna(nombre_comuna):
 
 
 @app.route('/comuna/', methods=['GET'])
-#@token_required
+@token_required
 def comunas():
     com = Comuna()
     nombre_p = request.args.get('provincia')
@@ -138,8 +138,9 @@ def comunas():
         return jsonify(com.getComunas())
 
 @app.route('/comuna/', methods=['POST'])
-#@token_required
+@token_required
 def addComuna():
+    tokenope = request.json['token']
     com = Comuna(nombre=request.json['nombre'], idProvincia=request.json['idProvincia'])
     if com.setComuna():
         return jsonify({'message':'Comuna creada exitosamente', 'Comuna': com.dic()})
@@ -249,9 +250,9 @@ def addProducto():
     else:
         return jsonify({'message':'Ha ocurrido un error al intentar crear el Producto'})
 
-@app.route('/producto/<string:nombre_producto>', methods=['PUT'])
-def updateProducto(nombre_producto):
-    prod = Producto(nombre=nombre_producto)
+@app.route('/producto/<int:id_producto>', methods=['PUT'])
+def updateProducto(id_producto):
+    prod = Producto(id=id_producto)
     if prod.getProducto():
         prod.setNombre(request.json['nombre'])
         prod.setDescripcion(request.json['descripcion'])
@@ -263,9 +264,9 @@ def updateProducto(nombre_producto):
             return jsonify({'message':'Ha ocurrido un error al intentar actualizar el Producto'})
 
 
-@app.route('/producto/<string:nombre_producto>', methods=['DELETE'])
-def deleteProducto(nombre_producto):
-    prod = Producto(nombre=nombre_producto)
+@app.route('/producto/<int:id_producto>', methods=['DELETE'])
+def deleteProducto(id_producto):
+    prod = Producto(id=id_producto)
     if prod.getProducto():
         if prod.deleteProducto():
             return jsonify({
@@ -371,7 +372,7 @@ def deleteProvincia(nombre_provincia):
     if pro.getProvincia():
         if pro.deleteProvincia():
             return jsonify({
-                'message': 'La region fue eliminada exitosamente',
+                'message': 'La provincia fue eliminada exitosamente',
                 'Region': pro.dic()
             })
         else:
@@ -447,9 +448,9 @@ def tiendas():
 def addTienda():
     tie = Tienda(nombre=request.json['nombre'], direccion=request.json['direccion'], email=request.json['email'], telefono=request.json['telefono'],idComuna=request.json['idComuna'], idTipoTienda=request.json['idTipoTienda'])
     if tie.createTienda():
-        return jsonify({'message':'Tipo de tienda creada exitosamente', 'Tienda': tie.dic()})
+        return jsonify({'message':'Tienda creada exitosamente', 'Tienda': tie.dic()})
     else:
-        return jsonify({'message':'Ha ocurrido un error al intentar crear el Tipo de tienda'})
+        return jsonify({'message':'Ha ocurrido un error al intentar crear la Tienda'})
 
 @app.route('/tienda/<string:pNombre>', methods=['PUT'])
 def updateTienda(pNombre):

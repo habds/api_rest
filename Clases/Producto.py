@@ -38,6 +38,21 @@ class Producto():
 
    def getProducto(self):
       try:
+         self.db.cursor.execute(f'select id, nombre, descripcion, precio, idcategoria from producto where id="{self.id}"')
+         obj = self.db.cursor.fetchone()
+         if obj != None:
+            self.setId(f'{obj[0]}')
+            self.setNombre(f'{obj[1]}')
+            self.setDescripcion(obj[2])
+            self.setPrecio(obj[3])
+            self.idcategoria = obj[4]
+            return True
+      except mysql.connector.Error as err:
+         print(err)
+         return False
+
+   def getProductoByNombre(self):
+      try:
          self.db.cursor.execute(f'select id, nombre, descripcion, precio, idcategoria from producto where nombre="{self.nombre}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
@@ -68,7 +83,7 @@ class Producto():
       try:
          self.db.cursor.execute(f'insert into producto(nombre, descripcion, precio, idcategoria) values("{self.nombre}","{self.descripcion}", {self.precio}, {self.idcategoria})')
          self.db.cursor.execute("commit;")
-         self.getProducto()
+         self.getProductoByNombre()
          return True
       except mysql.connector.Error as err:
          print("Ha ocurrido un error: {}".format(err))
