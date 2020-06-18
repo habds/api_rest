@@ -310,7 +310,7 @@ def updateCategoria(nombre_categoria):
         if cat.updateCategoria():
             return jsonify({'message':'Categoria Actualizada Exitosamente', 'Categoria':cat.dic()})
         else:
-            return jsonify({'message':'Ha ocurrido un error al intentar actualizar la Region'})
+            return jsonify({'message':'Ha ocurrido un error al intentar actualizar la Categoria'})
 
 
 @app.route('/categoria/<string:nombre_categoria>', methods=['DELETE'])
@@ -387,7 +387,7 @@ def tiendaTipo(pCodigo):
     if tie.getTiendaTipo():
         return jsonify({'message': 'Exitosamente', 'Tienda Tipo': tie.dic()})
     else:
-        return jsonify({"message":f'No existe ninguna provincia con el nombre {pCodigo}'})
+        return jsonify({"message":f'No existe ningun tipo de tienda con ese nombre {pCodigo}'})
 
 @app.route('/tiendatipo/', methods=['GET'])
 def tiendaTipos():

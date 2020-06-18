@@ -57,7 +57,7 @@ class Categoria():
 
    def updateCategoria(self):
       try:
-         self.db.cursor.execute(f"update categoria set nombre='{self.nombre}' where nombre={self.nombre}")
+         self.db.cursor.execute(f'update categoria set nombre="{self.nombre}" where id={self.id}')
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
