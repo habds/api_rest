@@ -55,7 +55,7 @@ class Login():
          print(err)
          return False
 
-   def searchPersonaById(self):
+   def searchLoginById(self):
       try:
          self.db.cursor.execute(f'select id, username, password, idPersona, idRol from login where id="{self.id}"')
          obj = self.db.cursor.fetchone()

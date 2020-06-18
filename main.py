@@ -34,7 +34,7 @@ app.config['SECRET_KEY'] = 'palabrasecretabb:v'
 @app.route('/login/<int:pId>', methods=['GET'])
 def login(pId):
     log = Login(id=pId)
-    if log.searchPersonaById():
+    if log.searchLoginById():
         return jsonify({'message': 'Exitosamente', 'Login': log.dic()})
     else:
         return jsonify({"message":f'No existe ningun sexo con el nombre {pId}'})
@@ -59,7 +59,7 @@ def updateLogin(pId):
     if log.searchLogin():
         log.setUsername(request.json['username'])
         log.setPassword(request.json['password'])
-        log.setIdpersona(request.json['idPeersona'])
+        log.setIdpersona(request.json['idPersona'])
         log.setIdrol(request.json['idRol'])
         if log.updateLogin():
             return jsonify({'message':'Datos de login actualizados exitosamente', 'login':log.dic()})
