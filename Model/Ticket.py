@@ -33,7 +33,7 @@ class Ticket():
  
    def searchTicket(self):
       try:
-         self.db.cursor.execute(f'select idTicket, ticket_abierto, estado from {self.tabla} where idTicket="{self.id}"')
+         self.db.cursor.execute(f'select idTicket, ticket_abierto, estado from {self.tabla} where idTicket={self.id}')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')

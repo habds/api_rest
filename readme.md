@@ -7,3 +7,4 @@ matias
 	metodo de pago
 	pago tienda
 	ticket
+	support
