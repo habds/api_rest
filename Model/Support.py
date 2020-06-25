@@ -86,7 +86,7 @@ class Support():
 
    def deleteSup(self):
       try:
-         self.db.cursor.execute(f"delete from {self.tabla} where idTicket='{self.id}'")
+         self.db.cursor.execute(f"delete from {self.tabla} where idSupport='{self.id}'")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -94,7 +94,7 @@ class Support():
          return False
 
    def dic(self):
-      diccionario = {'idTicket': self.id, 'Ticket Abierto': self.ticket_abierto, 'Estado' : self.estado}
+      diccionario = {'idSupport': self.id, 'estatus' : self.estatus , 'codigo': self.codigo, 'idTicket' : self.idTicket}
       return diccionario   
  
    def __str__(self):

@@ -8,3 +8,5 @@ matias
 	pago tienda
 	ticket
 	support
+	publicidad
+	categoria

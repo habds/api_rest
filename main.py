@@ -19,6 +19,8 @@ from Model.Login import Login
 from Model.Metodo_pago import Metodo_pago
 from Model.PagoTienda import PagoTienda
 from Model.Ticket import Ticket
+from Model.Support import Support
+from Model.Publicidad import Publicidad
 
 
 import jwt
@@ -847,9 +849,107 @@ def deleteTicket(pId):
 
 #------------------------------------------------FIN TICKET-----------------------------------------------------------
 #--------------------------------------------------SUPPORT ----------------------------------------------------------------
+@app.route('/soporte/<int:pId>', methods=['GET'])
+def support(pId):
+    sup = Support(id=pId)
+    if sup.searchSup():
+        return jsonify({'Message': 'Support encontrado exitosamente', 'Support': sup.dic()})
+    else:
+        return jsonify({"Message":f'No existe ningun ticket con el id {pId}'})
 
+@app.route('/soporte/', methods=['GET'])
+def supports():
+    sup = Support()
+    return jsonify(sup.selectSup())
 
+@app.route('/soporte/', methods=['POST'])
+def addSupport():
+    sup = Support(estatus=request.json['estatus'], codigo = request.json['codigo'], idTicket = request.json['idticket'])
+    if sup.insertSup():
+        return jsonify({'Message':'Support agregado exitosamente', 'Support': sup.dic()})
+    else:
+        return jsonify({'Message':'Ha ocurrido un error al intentar agregar el ticket'})
 
+@app.route('/soporte/<int:pId>', methods=['PUT'])
+def updateSupport(pId):
+    sup = Support(id=pId)
+    if sup.searchSup():
+        sup.setEstatus(request.json['estatus'])
+        sup.setCodigo(request.json['codigo'])
+        sup.setIdTicket(request.json['idticket'])
+        if sup.updateSup():
+            return jsonify({'Message':'El support ha sido actualizado Exitosamente', 'Support':sup.dic()})
+        else:
+            return jsonify({'Message':'Ha ocurrido un error al intentar actualizar el support'})
+    else:
+        return jsonify({'Message':'No encontro nada...'})
+
+@app.route('/soporte/<int:pId>', methods=['DELETE'])
+def deleteSupport(pId):
+    sup = Support(id=pId)
+    if sup.searchSup():
+        if sup.deleteSup():
+            return jsonify({
+                'Message': 'Los datos del support fueron eliminados exitosamente','Support': sup.dic()
+            })
+        else:
+            return jsonify({'Message':f'No ha sido posible eliminar el ticket con id : {pId}'})
+    else:
+        return jsonify({'Message':'No se encontraron datos del support'})
 #-----------------------------------------------FIN SUPPORT ------------------------------------------------------------------
+
+#-------------------------------------------------PUBLICIDAD------------------------------------------------------------------
+@app.route('/publicidad/<int:pId>', methods=['GET'])
+def publicidad(pId):
+    pub = Publicidad(id=pId)
+    if pub.search():
+        return jsonify({'Message': 'Publicidad encontrada exitosamente', 'Publicidad': pub.dic()})
+    else:
+        return jsonify({"Message":f'No existe ninguna publicidad con el id: {pId}'})
+
+@app.route('/publicidad/', methods=['GET'])
+def publicidades():
+    pub = Publicidad()
+    return jsonify(pub.select())
+
+@app.route('/publicidad/', methods=['POST'])
+def addPublicidad():
+    pub = Publicidad(f_inicio=request.json['inicio'], f_termino = request.json['termino'], compania = request.json['nombre'])
+    if pub.insert():
+        return jsonify({'Message':'Publicidad agregada exitosamente', 'Publicidad': pub.dic()})
+    else:
+        return jsonify({'Message':'Ha ocurrido un error al intentar agregar la publicidad'})
+
+@app.route('/publicidad/<int:pId>', methods=['PUT'])
+def updatePublicidad(pId):
+    pub = Publicidad(id=pId)
+    if pub.search():
+        pub.setF_inicio(request.json['inicio'])
+        pub.setF_termino(request.json['termino'])
+        pub.setCompania(request.json['nombre'])
+        if pub.update():
+            return jsonify({'Message':'La publicidad ha sido actualizada Exitosamente', 'Publicidad':pub.dic()})
+        else:
+            return jsonify({'Message':'Ha ocurrido un error al intentar actualizar la publicidad'})
+    else:
+        return jsonify({'Message':'No encontro nada...'})
+
+@app.route('/publicidad/<int:pId>', methods=['DELETE'])
+def deletePublicidad(pId):
+    pub = Publicidad(id=pId)
+    if pub.search():
+        if pub.delete():
+            return jsonify({
+                'Message': 'Los datos de la publicidad fueron eliminados exitosamente','Publicidad': pub.dic()
+            })
+        else:
+            return jsonify({'Message':f'No ha sido posible eliminar la publicidad con id : {pId}'})
+    else:
+        return jsonify({'Message':'No se encontraron datos de la publicidad'})
+
+
+#-----------------------------------------------FIN PUBLICIDAD------------------------------------------------------------------
+
+
 if __name__ == '__main__':
  app.run(debug=True)
