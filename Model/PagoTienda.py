@@ -30,7 +30,7 @@ class PagoTienda():
 
    def searchPagoTienda(self):
       try:
-         self.db.cursor.execute(f'select idPago_Tienda, idTienda, idMetodo_Pago from Pago_Tienda where idPago_Tienda="{self.idPago_Tienda}"')
+         self.db.cursor.execute(f'select idPago_Tienda, idTienda, idMetodo_Pago from Pago_Tienda where idPago_Tienda="{self.id}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -41,8 +41,8 @@ class PagoTienda():
          print(err)
          return False
 
-   def selectMetodoPago(self):
-      self.db.cursor.execute('select idMetodo_Pago, nombre_metodoPago from Metodo_Pago')
+   def selectPagoTienda(self):
+      self.db.cursor.execute('select idPago_Tienda, idTienda, idMetodo_Pago from Pago_Tienda')
       data = self.db.cursor.fetchall()
       dicDatos = {}
       listaDatos = []
@@ -54,28 +54,28 @@ class PagoTienda():
       return result
 
 
-   def insertMetodoPago(self):
+   def insertPagoTienda(self):
       try:
-         self.db.cursor.execute(f'insert into Metodo_Pago(nombre_metodoPago) values("{self.nombre}")')
+         self.db.cursor.execute(f'insert into Pago_Tienda(idTienda, idMetodo_Pago) values({self.idTienda}, {self.idMetodoPago})')
          self.db.cursor.execute("commit;")
-         self.searchMetodoPago()
+         self.searchPagoTienda()
          return True
       except mysql.connector.Error as err:
          print("Ha ocurrido un error: {}".format(err))
-         return  False
+         return False
 
-   def updateMetodoPago(self):
+   def updatePagoTienda(self):
       try:
-         self.db.cursor.execute(f"update Metodo_Pago set nombre_metodopago='{self.nombre}' where idMetodo_Pago={self.id}")
+         self.db.cursor.execute(f"update Pago_Tienda set idTienda={self.idTienda}, idMetodo_Pago={self.idMetodoPago} where idPago_Tienda={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
          print(err)
          return False
 
-   def deleteMetodoPago(self):
+   def deletePagoTienda(self):
       try:
-         self.db.cursor.execute(f"delete from Metodo_Pago where nombre_metodopago='{self.nombre}'")
+         self.db.cursor.execute(f"delete from Pago_Tienda where idPago_Tienda='{self.id}'")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -83,7 +83,7 @@ class PagoTienda():
          return False
 
    def dic(self):
-      diccionario = {'id': self.id, 'nombre': self.nombre}
+      diccionario = {'idPago de tienda': self.id, 'id Tienda': self.idTienda, 'id Metodo Pago' : self.idMetodoPago}
       return diccionario
    
  

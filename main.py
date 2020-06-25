@@ -17,6 +17,8 @@ from Model.Persona import Persona
 from Model.Login_detail import Login_detail
 from Model.Login import Login
 from Model.Metodo_pago import Metodo_pago
+from Model.PagoTienda import PagoTienda
+from Model.Ticket import Ticket
 
 
 import jwt
@@ -725,7 +727,7 @@ def updateMetodooPago(pNombre):
     if met.searchMetodoPago():
         met.setNombre(request.json['nombre'])
         if met.updateMetodoPago():
-            return jsonify({'Message':'Datos del metodo de pago han sido actualizados Exitosamente', 'Persona':met.dic()})
+            return jsonify({'Message':'Datos del metodo de pago han sido actualizados Exitosamente', 'metodo de pago':met.dic()})
         else:
             return jsonify({'Message':'Ha ocurrido un error al intentar actualizar el metodo de pago'})
     else:
@@ -740,14 +742,109 @@ def deleteMetodoPago(pNombre):
                 'Message': 'Los datos del metodo de pago fueron eliminados exitosamente','Metodo de pago': met.dic()
             })
         else:
-            return jsonify({'message':'No ha sido posible eliminar los datos de la persona'})
+            return jsonify({'message':'No ha sido posible eliminar los datos del metodo de pago'})
     else:
-        return jsonify({'message':'No se encontraron datos de la persona'})
+        return jsonify({'message':'No se encontraron datos del metodo de pago'})
 #---------------------------------------fin metodo pago---------------------------------------------
 #-------------------------------------PAGO TIENDA-----------------------------------------------------
+@app.route('/pagotienda/<int:pId>', methods=['GET'])
+def pagotienda(pId):
+    pag = PagoTienda(id=pId)
+    if pag.searchPagoTienda():
+        return jsonify({'Message': 'Pago de tienda encontrado exitosamente', 'Pago de tienda': pag.dic()})
+    else:
+        return jsonify({"Message":f'No existe ningun pago de tienda con el id {pId}'})
 
+@app.route('/pagotienda/', methods=['GET'])
+def pagostienda():
+    pag = PagoTienda()
+    return jsonify(pag.selectPagoTienda())
+
+@app.route('/pagotienda/', methods=['POST'])
+def addPagoTienda():
+    pag = PagoTienda(idTienda=request.json['idtienda'], idMetodoPago = request.json['idmetodopago'])
+    if pag.insertPagoTienda():
+        return jsonify({'Message':'Pago tienda agregado exitosamente', 'Pago tienda': pag.dic()})
+    else:
+        return jsonify({'Message':'Ha ocurrido un error al intentar agregar el pago tienda'})
+
+@app.route('/pagotienda/<int:pId>', methods=['PUT'])
+def updatePagoTienda(pId):
+    pag = PagoTienda(id=pId)
+    if pag.searchPagoTienda():
+        pag.setIdtienda(request.json['idtienda'])
+        pag.setIdmetodopago(request.json['idmetodopago'])
+        if pag.updatePagoTienda():
+            return jsonify({'Message':'El pago tienda ha sido actualizado Exitosamente', 'Pago tienda':pag.dic()})
+        else:
+            return jsonify({'Message':'Ha ocurrido un error al intentar actualizar el pago tienda'})
+    else:
+        return jsonify({'Message':'No encontro nada...'})
+
+@app.route('/pagotienda/<int:pId>', methods=['DELETE'])
+def deletePagoTienda(pId):
+    pag = PagoTienda(id=pId)
+    if pag.searchPagoTienda():
+        if pag.deletePagoTienda():
+            return jsonify({
+                'Message': 'Los datos del pago de tienda fueron eliminados exitosamente','Pago de tienda': pag.dic()
+            })
+        else:
+            return jsonify({'Message':f'No ha sido posible eliminar los pago de tienda con id : {pId}'})
+    else:
+        return jsonify({'Message':'No se encontraron datos del pago tienda'})
 
 #-----------------------------------------FIN PAGO TIENDA----------------------------------------------------
 
+#-------------------------------------------------TICKET------------------------------------------------------------
+@app.route('/ticket/<int:pId>', methods=['GET'])
+def ticket(pId):
+    tic = Ticket(id=pId)
+    if tic.searchTicket():
+        return jsonify({'Message': 'Ticket encontrado exitosamente', 'ticket': tic.dic()})
+    else:
+        return jsonify({"Message":f'No existe ningun ticket con el id {pId}'})
+
+@app.route('/ticket/', methods=['GET'])
+def tickes():
+    tic = Ticket()
+    return jsonify(tic.selectTicket())
+
+@app.route('/ticket/', methods=['POST'])
+def addTicket():
+    tic = Ticket(ticket_abierto=request.json['ticket_abierto'], estado = request.json['estado'])
+    if tic.insertTicket():
+        return jsonify({'Message':'Ticket agregado exitosamente', 'Ticket': tic.dic()})
+    else:
+        return jsonify({'Message':'Ha ocurrido un error al intentar agregar el ticket'})
+
+@app.route('/ticket/<int:pId>', methods=['PUT'])
+def updateTicket(pId):
+    tic = Ticket(id=pId)
+    if tic.searchTicket():
+        tic.setTicket_abierto(request.json['ticket_abierto'])
+        tic.setEstado(request.json['estado'])
+        if tic.updateTicket():
+            return jsonify({'Message':'El ticket ha sido actualizado Exitosamente', 'ticket':tic.dic()})
+        else:
+            return jsonify({'Message':'Ha ocurrido un error al intentar actualizar el ticket'})
+    else:
+        return jsonify({'Message':'No encontro nada...'})
+
+@app.route('/ticket/<int:pId>', methods=['DELETE'])
+def deleteTicket(pId):
+    tic = Ticket(id=pId)
+    if tic.searchTicket():
+        if tic.deleteTicket():
+            return jsonify({
+                'Message': 'Los datos del ticket fueron eliminados exitosamente','Ticket': tic.dic()
+            })
+        else:
+            return jsonify({'Message':f'No ha sido posible eliminar el ticket con id : {pId}'})
+    else:
+        return jsonify({'Message':'No se encontraron datos del ticket'})
+
+
+#------------------------------------------------FIN TICKET-----------------------------------------------------------
 if __name__ == '__main__':
  app.run(debug=True)

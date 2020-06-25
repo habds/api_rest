@@ -5,3 +5,5 @@ matias
 	Ciudad con sabor a comuna
 	tienda
 	metodo de pago
+	pago tienda
+	ticket
