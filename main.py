@@ -1,18 +1,23 @@
 import sys, os
 sys.path.append(os.getcwd())
+
 from flask import Flask, jsonify, request
-from Clases.Comuna import Comuna
-from Clases.Region import Region
-from Clases.Producto import Producto
-from Clases.Categoria import Categoria
-from Clases.Provincia import Provincia
-from Clases.TiendaTipo import TiendaTipo
-from Clases.Tienda import Tienda
-from Clases.Rol import Rol
-from Clases.Sexo import Sexo
-from Clases.Persona import Persona
-from Clases.Login_detail import Login_detail
-from Clases.Login import Login
+
+
+from Model.Comuna import Comuna
+from Model.Region import Region
+from Model.Producto import Producto
+from Model.Categoria import Categoria
+from Model.Provincia import Provincia
+from Model.TiendaTipo import TiendaTipo
+from Model.Tienda import Tienda
+from Model.Rol import Rol
+from Model.Sexo import Sexo
+from Model.Persona import Persona
+from Model.Login_detail import Login_detail
+from Model.Login import Login
+from Model.Metodo_pago import Metodo_pago
+
 
 import jwt
 import datetime
@@ -127,7 +132,7 @@ def comuna(nombre_comuna):
 
 
 @app.route('/comuna/', methods=['GET'])
-@token_required
+# @token_required
 def comunas():
     com = Comuna()
     nombre_p = request.args.get('provincia')
@@ -138,7 +143,7 @@ def comunas():
         return jsonify(com.getComunas())
 
 @app.route('/comuna/', methods=['POST'])
-@token_required
+#@token_required
 def addComuna():
     tokenope = request.json['token']
     com = Comuna(nombre=request.json['nombre'], idProvincia=request.json['idProvincia'])
@@ -189,13 +194,14 @@ def region(nombre_region):
         return jsonify({"message":f'No existe ninguna region con el nombre {nombre_region}'})
 
 @app.route('/region/', methods=['GET'])
+# @token_required
 def regiones():
     reg = Region()
     return jsonify(reg.getRegiones())
 
 @app.route('/region/', methods=['POST'])
 def addRegion():
-    reg = Region(nombre=request.json['nombre'], codigo=request.json['codigo'])
+    reg = Region(nombre=request.json['nombre'])
     if reg.setRegion():
         return jsonify({'message':'Region creada exitosamente', 'Region': reg.dic()})
     else:
@@ -382,13 +388,13 @@ def deleteProvincia(nombre_provincia):
 #-----------------fin provincia----------------------------------
 
 #-----------------Tienda Tipo---------------------------------------
-@app.route('/tiendatipo/<string:pCodigo>', methods=['GET'])
-def tiendaTipo(pCodigo):
-    tie = TiendaTipo(codigo=pCodigo)
+@app.route('/tiendatipo/<string:pDescr>', methods=['GET'])
+def tiendaTipo(pDescr):
+    tie = TiendaTipo(descripcion=pDescr)
     if tie.getTiendaTipo():
         return jsonify({'message': 'Exitosamente', 'Tienda Tipo': tie.dic()})
     else:
-        return jsonify({"message":f'No existe ningun tipo de tienda con ese nombre {pCodigo}'})
+        return jsonify({"message":f'No existe ningun tipo de tienda con ese nombre {pDescr}'})
 
 @app.route('/tiendatipo/', methods=['GET'])
 def tiendaTipos():
@@ -691,7 +697,57 @@ def deletePersona(pRun):
 
 #---------------------------------------FIN PERSONA ---------------------------------------------------
 
+#--------------------------------------Metodo Pago------------------------------------------------
+@app.route('/metodopago/<string:pNombre>', methods=['GET'])
+def metodoPago(pNombre):
+    met = Metodo_pago(nombre=pNombre)
+    if met.searchMetodoPago():
+        return jsonify({'Message': 'Metodo de pago encontrada exitosamente', 'Metodo de pago': met.dic()})
+    else:
+        return jsonify({"Message":f'No existe ninguna metodo de pago con el nombre {pNombre}'})
 
+@app.route('/metodopago/', methods=['GET'])
+def metodosPagos():
+    met = Metodo_pago()
+    return jsonify(met.selectMetodoPago())
+
+@app.route('/metodopago/', methods=['POST'])
+def addMetodoPago():
+    met = Metodo_pago(nombre=request.json['nombre'])
+    if met.insertMetodoPago():
+        return jsonify({'message':'Metodo de pago agregado exitosamente', 'Metodo de pago': met.dic()})
+    else:
+        return jsonify({'message':'Ha ocurrido un error al intentar agregar el metodo de pago'})
+
+@app.route('/metodopago/<string:pNombre>', methods=['PUT'])
+def updateMetodooPago(pNombre):
+    met = Metodo_pago(nombre=pNombre)
+    if met.searchMetodoPago():
+        met.setNombre(request.json['nombre'])
+        if met.updateMetodoPago():
+            return jsonify({'Message':'Datos del metodo de pago han sido actualizados Exitosamente', 'Persona':met.dic()})
+        else:
+            return jsonify({'Message':'Ha ocurrido un error al intentar actualizar el metodo de pago'})
+    else:
+        return jsonify({'Message':'No encontro nada...'})
+
+@app.route('/metodopago/<string:pNombre>', methods=['DELETE'])
+def deleteMetodoPago(pNombre):
+    met = Metodo_pago(nombre=pNombre)
+    if met.searchMetodoPago():
+        if met.deleteMetodoPago():
+            return jsonify({
+                'Message': 'Los datos del metodo de pago fueron eliminados exitosamente','Metodo de pago': met.dic()
+            })
+        else:
+            return jsonify({'message':'No ha sido posible eliminar los datos de la persona'})
+    else:
+        return jsonify({'message':'No se encontraron datos de la persona'})
+#---------------------------------------fin metodo pago---------------------------------------------
+#-------------------------------------PAGO TIENDA-----------------------------------------------------
+
+
+#-----------------------------------------FIN PAGO TIENDA----------------------------------------------------
 
 if __name__ == '__main__':
  app.run(debug=True)

@@ -1,7 +1,7 @@
 import sys, os
 sys.path.append(os.getcwd())
-from conexion2 import DataBaseConexion
-from Clases.Region import Region
+from conexion import DataBaseConexion
+from Model.Region import Region
 import mysql.connector
 
 class Provincia(): 
@@ -15,7 +15,8 @@ class Provincia():
       self.id = id
  
    def setNombre(self, nombre):
-      self.nombre = nombre
+      if len(nombre)<81:
+         self.nombre = nombre
  
    def setIdregion(self, idRegion):
       self.idRegion = idRegion
@@ -31,7 +32,7 @@ class Provincia():
 
    def getProvincia(self):
       try:
-         self.db.cursor.execute(f'select id, nombre,idRegion from provincia where nombre="{self.nombre}"')
+         self.db.cursor.execute(f'select idProvincia, nombre_provincia,idRegion from provincia where nombre_provincia="{self.nombre}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -44,7 +45,7 @@ class Provincia():
 
    def filtroRegion(self, region_id):
       try:
-         self.db.cursor.execute(f'select id, nombre, idRegion from provincia where idRegion = {region_id}')
+         self.db.cursor.execute(f'select idProvincia, nombre_provincia, idRegion from provincia where idRegion = {region_id}')
       
          data = self.db.cursor.fetchall()
          dicDatos = {}
@@ -62,7 +63,7 @@ class Provincia():
 
    def getProvinciaId(self):
       try:
-         self.db.cursor.execute(f'select id, nombre,idRegion from provincia where id="{self.id}"')
+         self.db.cursor.execute(f'select idProvincia, nombre_provincia, idRegion from Provincia where idProvincia="{self.id}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -74,7 +75,7 @@ class Provincia():
          return False
 
    def getProvincias(self):
-      self.db.cursor.execute('select id, nombre, idregion from provincia')
+      self.db.cursor.execute('select idProvincia, nombre_provincia, idRegion from Provincia')
       data = self.db.cursor.fetchall()
       dicDatos = {}
       listaDatos = []
@@ -88,7 +89,7 @@ class Provincia():
 
    def setProvincia(self):
       try:
-         self.db.cursor.execute(f'insert into provincia(nombre,idRegion) values("{self.nombre}","{self.idRegion}")')
+         self.db.cursor.execute(f'insert into Provincia(nombre_provincia,idRegion) values("{self.nombre}","{self.idRegion}")')
          self.db.cursor.execute("commit;")
          self.getProvincia()
          return True
@@ -98,7 +99,7 @@ class Provincia():
 
    def updateProvincia(self):
       try:
-         self.db.cursor.execute(f"update provincia set nombre='{self.nombre}', idRegion={self.idRegion} where id={self.id}")
+         self.db.cursor.execute(f"update Provincia set nombre_provincia='{self.nombre}', idRegion={self.idRegion} where idProvincia={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -107,7 +108,7 @@ class Provincia():
 
    def deleteProvincia(self):
       try:
-         self.db.cursor.execute(f"delete from provincia where nombre='{self.nombre}'")
+         self.db.cursor.execute(f"delete from Provincia where nombre_provincia='{self.nombre}'")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:

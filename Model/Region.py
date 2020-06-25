@@ -1,41 +1,34 @@
 import sys, os
 sys.path.append(os.getcwd())
-from conexion2 import DataBaseConexion
+from conexion import DataBaseConexion
 import mysql.connector
 
 class Region(): 
-   def __init__(self,id = 0,nombre = '',codigo = ''): 
+   def __init__(self,id = 0,nombre = ''): 
       self.id = id
       self.nombre = nombre
-      self.codigo = codigo
       self.db = DataBaseConexion()
  
    def setId(self, id):
       self.id = id
  
    def setNombre(self, nombre):
-      self.nombre = nombre
- 
-   def setCodigo(self, codigo):
-      self.codigo = codigo
+      if len(nombre)<81:
+         self.nombre = nombre
  
    def getId(self):
       return self.id
  
    def getNombre(self):
       return self.nombre
- 
-   def getCodigo(self):
-      return self.codigo
 
    def getRegion(self):
       try:
-         self.db.cursor.execute(f'select id, nombre, code from region where nombre="{self.nombre}"')
+         self.db.cursor.execute(f'select idRegion, nombre_region from region where nombre_region="{self.nombre}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
             self.setNombre(f'{obj[1]}')
-            self.setCodigo(obj[2])
             return True
       except mysql.connector.Error as err:
          print(err)
@@ -43,12 +36,11 @@ class Region():
 
    def getRegionId(self):
       try:
-         self.db.cursor.execute(f'select id, nombre, code from region where id="{self.id}"')
+         self.db.cursor.execute(f'select idRegion, nombre_region from region where idRegion="{self.id}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
             self.setNombre(f'{obj[1]}')
-            self.setCodigo(obj[2])
             return True
       except mysql.connector.Error as err:
          print(err)
@@ -56,13 +48,13 @@ class Region():
 
 
    def getRegiones(self):
-      self.db.cursor.execute('select id, nombre, code from region')
+      self.db.cursor.execute('select idRegion, nombre_region from Region')
       data = self.db.cursor.fetchall()
       dicDatos = {}
       listaDatos = []
 
       for registro in data:
-         dicDatos = {"id": registro[0], "nombre": registro[1], 'codigo': registro[2]}
+         dicDatos = {"id": registro[0], "nombre": registro[1]}
          listaDatos.append(dicDatos)
       result = {'Message': 'Mostrando Regiones', 'Regiones': listaDatos}
       return result
@@ -70,7 +62,7 @@ class Region():
 
    def setRegion(self):
       try:
-         self.db.cursor.execute(f'insert into region(nombre, code) values("{self.nombre}","{self.codigo}")')
+         self.db.cursor.execute(f'insert into region(nombre) values("{self.nombre}")')
          self.db.cursor.execute("commit;")
          self.getRegion()
          return True
@@ -98,7 +90,7 @@ class Region():
 
 
    def dic(self):
-      diccionario = {'id': self.id, 'nombre': self.nombre, 'codigo': self.codigo}
+      diccionario = {'id': self.id, 'nombre': self.nombre}
       return diccionario
 
  

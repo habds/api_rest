@@ -1,8 +1,8 @@
 import sys, os
 sys.path.append(os.getcwd())
-from conexion2 import DataBaseConexion
+from conexion import DataBaseConexion
 import mysql.connector
-from Clases.Provincia import Provincia
+from Model.Provincia import Provincia
 class Comuna(): 
 
    def __init__(self,id = 0,nombre = '', idProvincia=0): 
@@ -15,7 +15,8 @@ class Comuna():
       self.id = id
  
    def setNombre(self, nombre):
-      self.nombre = nombre
+      if len(nombre):
+         self.nombre = nombre
  
    def setIdProvincia(self, idProvincia):
       self.idProvincia = idProvincia
@@ -28,7 +29,7 @@ class Comuna():
 
    def getComuna(self):
       try:
-         self.db.cursor.execute(f'select id, nombre, idProvincia from comuna where nombre="{self.nombre}"')
+         self.db.cursor.execute(f'select idCiudad, nombre_ciudad, idProvincia from Ciudad where nombre_ciudad="{self.nombre}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -40,7 +41,7 @@ class Comuna():
          return False
 
    def getComunas(self):
-      self.db.cursor.execute('select id, nombre, idProvincia from comuna')
+      self.db.cursor.execute('select idCiudad, nombre_ciudad, idProvincia from Ciudad')
       data = self.db.cursor.fetchall()
       dicDatos = {}
       listaDatos = []
@@ -54,7 +55,7 @@ class Comuna():
 
    def setComuna(self):
       try:
-         self.db.cursor.execute(f'insert into comuna(nombre, idProvincia) values("{self.nombre}",{self.idProvincia})')
+         self.db.cursor.execute(f'insert into comuna(nombre_ciudad, idProvincia) values("{self.nombre}",{self.idProvincia})')
          self.db.cursor.execute("commit;")
          self.getComuna()
          return True
@@ -64,7 +65,7 @@ class Comuna():
 
    def updateComuna(self):
       try:
-         self.db.cursor.execute(f"update comuna set nombre='{self.nombre}', idProvincia={self.idProvincia} where id={self.id}")
+         self.db.cursor.execute(f"update comuna set nombre_ciudad='{self.nombre}', idProvincia={self.idProvincia} where idCiudad={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -73,7 +74,7 @@ class Comuna():
 
    def deleteComuna(self):
       try:
-         self.db.cursor.execute(f"delete from comuna where nombre='{self.nombre}'")
+         self.db.cursor.execute(f"delete from Ciudad where nombre_ciduad='{self.nombre}'")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -82,7 +83,7 @@ class Comuna():
    
    def filtrarProvincia(self, provinciaid):
       try:
-         self.db.cursor.execute(f"select id, nombre, idProvincia from comuna where idProvincia = {provinciaid}")
+         self.db.cursor.execute(f"select idCiudad, nombre_ciudad, idProvincia from Ciudad where idProvincia = {provinciaid}")
          data = self.db.cursor.fetchall()
          dicDatos = {}
          listaDatos = []
