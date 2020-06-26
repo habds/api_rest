@@ -909,5 +909,64 @@ def deleteComuna(idreport_type):
 
 
 #------------------------------------Fin Report Type-------------------------------------------------------------
+
+#------------------------------------Report-------------------------------------------------------------
+
+@app.route('/reportetipo/<int:idreporttype>', methods=['GET'])
+
+def report_type(idreporttype):
+    rep = Report_type(id=idreporttype)
+    if rep.getReportType():
+        return jsonify({'message': 'Exitosamente', 'Report_Type': rep.dic()})
+    else:
+        return jsonify({"message":f'No existe ningun Report_Type con el id {idreporttype}'})
+
+
+@app.route('/reportetipo/', methods=['GET'])
+# @token_required
+def report_types():
+    rep = Report_type()
+    return jsonify(rep.getReportTypes())
+
+@app.route('/reportetipo/', methods=['POST'])
+#@token_required
+def addReport_Type():
+    rep = Report_type(descripcion=request.json['descripcion'], area=request.json['area'], area_code=request.json['area_code'])
+    if rep.setReportType():
+        return jsonify({'message':'Report Type creado exitosamente', 'Report Type': rep.dic()})
+    else:
+        return jsonify({'message':'Ha ocurrido un error al intentar crear el Report Type'})
+
+@app.route('/reportetipo/<int:idreport_type>', methods=['PUT'])
+def updateReportType(idreport_type):
+    rep = Report_type(id=idreport_type)
+    if rep.getReportType():
+        rep.setDescripcion(request.json['descripcion'])
+        rep.setArea(request.json['area'])
+        rep.setArea_code(request.json['area_code'])
+        if rep.updateReportType():
+            return jsonify({'message':'Report Type Actualizado Exitosamente', 'Report Type':rep.dic()})
+        else:
+            return jsonify({'message':'Ha ocurrido un error al intentar actualizar el Report Type'})
+
+
+@app.route('/reportetipo/<int:idreport_type>', methods=['DELETE'])
+def deleteComuna(idreport_type):
+    rep = Report_type(id=idreport_type)
+    if rep.getReportType():
+        if rep.deleteReportType():
+            return jsonify({
+                'message': 'El Report Type fue eliminado exitosamente',
+                'Report Type': rep.dic()
+            })
+        else:
+            return jsonify({'message':'No ha sido posible eliminar el Report Type'})
+    else:
+        return jsonify({'message':'No se encontro ningun Report Type para eliminar'})
+
+
+
+
+#------------------------------------Fin Report Type-------------------------------------------------------------
 if __name__ == '__main__':
  app.run(debug=True)

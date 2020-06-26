@@ -23,7 +23,7 @@ class Sexo():
 
    def getSexo(self):
       try:
-         self.db.cursor.execute(f'select id, nombre from sexo where nombre="{self.nombre}"')
+         self.db.cursor.execute(f'select idGenero, nombre_genero from Genero where nombre_genero="{self.nombre}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -35,7 +35,7 @@ class Sexo():
 
 
    def getSexos(self):
-      self.db.cursor.execute('select id, nombre from sexo')
+      self.db.cursor.execute('select idGenero, nombre_genero from Genero')
       data = self.db.cursor.fetchall()
       dicDatos = {}
       listaDatos = []
@@ -49,7 +49,7 @@ class Sexo():
 
    def setSexo(self):
       try:
-         self.db.cursor.execute(f'insert into sexo(nombre) values("{self.nombre}")')
+         self.db.cursor.execute(f'insert into Genero(nombre_genero) values("{self.nombre}")')
          self.db.cursor.execute("commit;")
          self.getSexo()
          return True
@@ -59,7 +59,7 @@ class Sexo():
 
    def updateSexo(self):
       try:
-         self.db.cursor.execute(f"update sexo set nombre='{self.nombre}' where id={self.id}")
+         self.db.cursor.execute(f"update Genero set nombre_genero='{self.nombre}' where idGenero={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -68,7 +68,7 @@ class Sexo():
 
    def deleteSexo(self):
       try:
-         self.db.cursor.execute(f"delete from sexo where nombre='{self.nombre}'")
+         self.db.cursor.execute(f"delete from Genero where nombre_genero='{self.nombre}'")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:

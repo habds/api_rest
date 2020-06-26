@@ -31,7 +31,7 @@ class Rol():
 
    def searchRol(self):
       try:
-         self.db.cursor.execute(f'select id, nombre, code from rol where nombre="{self.nombre}"')
+         self.db.cursor.execute(f'select idRoles, nombre_rol from roles where nombre_rol="{self.nombre}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -58,12 +58,12 @@ class Rol():
 
 
    def selectRoles(self):
-      self.db.cursor.execute('select id, nombre, code from rol')
+      self.db.cursor.execute('select idRoles, nombre_rol from roles')
       data = self.db.cursor.fetchall()
       dicDatos = {}
       listaDatos = []
       for registro in data:
-         dicDatos = {"id": registro[0], "nombre": registro[1], 'codigo': registro[2]}
+         dicDatos = {"id": registro[0], "nombre": registro[1]}
          listaDatos.append(dicDatos)
       result = {'Message': 'Mostrando Roles', 'Roles': listaDatos}
       return result
@@ -71,7 +71,7 @@ class Rol():
 
    def insertRol(self):
       try:
-         self.db.cursor.execute(f'insert into rol(nombre, code) values("{self.nombre}","{self.codigo}")')
+         self.db.cursor.execute(f'insert into Roles(nombre_rol) values("{self.nombre}")')
          self.db.cursor.execute("commit;")
          self.searchRol()
          return True
@@ -81,7 +81,7 @@ class Rol():
 
    def updateRol(self):
       try:
-         self.db.cursor.execute(f"update rol set nombre='{self.nombre}', code='{self.codigo}' where id={self.id}")
+         self.db.cursor.execute(f"update Roles set nombre_roles='{self.nombre}' where idRoles={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -90,7 +90,7 @@ class Rol():
 
    def deleteRol(self):
       try:
-         self.db.cursor.execute(f"delete from rol where nombre='{self.nombre}'")
+         self.db.cursor.execute(f"delete from Roles where nombre_rol='{self.nombre}'")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -99,7 +99,7 @@ class Rol():
 
 
    def dic(self):
-      diccionario = {'id': self.id, 'nombre': self.nombre, 'codigo': self.codigo}
+      diccionario = {'id': self.id, 'nombre': self.nombre}
       return diccionario
 
  
