@@ -1,9 +1,10 @@
 import sys, os
 sys.path.append(os.getcwd())
-from conexion2 import DataBaseConexion
+from conexion import DataBaseConexion
 import mysql.connector
 
 class Categoria(): 
+   tabla = "Categoria"
    def __init__(self,id = 0,nombre = ''): 
       self.id = id
       self.nombre = nombre
@@ -23,7 +24,7 @@ class Categoria():
  
    def getCategoria(self):
       try:
-         self.db.cursor.execute(f'select id, nombre from categoria where nombre="{self.nombre}"')
+         self.db.cursor.execute(f'select idCategoria, nombre_categoria from {self.tabla} where nombre_categoria="{self.nombre}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -34,7 +35,7 @@ class Categoria():
          return False
 
    def getCategorias(self):
-      self.db.cursor.execute('select id, nombre from categoria')
+      self.db.cursor.execute(f'select idCategoria, nombre_categoria from {self.tabla}')
       data = self.db.cursor.fetchall()
       dicDatos = {}
       listaDatos = []
@@ -47,7 +48,7 @@ class Categoria():
 
    def setCategoria(self):
       try:
-         self.db.cursor.execute(f'insert into categoria(nombre) values("{self.nombre}")')
+         self.db.cursor.execute(f'insert into {self.tabla}(nombre_categoria) values("{self.nombre}")')
          self.db.cursor.execute("commit;")
          self.getCategoria()
          return True
@@ -57,7 +58,7 @@ class Categoria():
 
    def updateCategoria(self):
       try:
-         self.db.cursor.execute(f'update categoria set nombre="{self.nombre}" where id={self.id}')
+         self.db.cursor.execute(f'update {self.tabla} set nombre_categoria="{self.nombre}" where idCategoria={self.id}')
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -66,19 +67,16 @@ class Categoria():
 
    def deleteCategoria(self):
       try:
-         self.db.cursor.execute(f"delete from categoria where nombre='{self.nombre}'")
+         self.db.cursor.execute(f"delete from {self.nombre} where nombre_categoria='{self.nombre}'")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
          print(f"Ha ocurrido un error: {err}")
          return False
 
-
    def dic(self):
       diccionario = {'id': self.id, 'nombre': self.nombre}
       return diccionario
-
-
 
    def __str__(self):
       return str(self.id), str(self.nombre)

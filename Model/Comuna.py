@@ -55,7 +55,7 @@ class Comuna():
 
    def setComuna(self):
       try:
-         self.db.cursor.execute(f'insert into comuna(nombre_ciudad, idProvincia) values("{self.nombre}",{self.idProvincia})')
+         self.db.cursor.execute(f'insert into Ciudad(nombre_ciudad, idProvincia) values("{self.nombre}",{self.idProvincia})')
          self.db.cursor.execute("commit;")
          self.getComuna()
          return True
@@ -65,7 +65,7 @@ class Comuna():
 
    def updateComuna(self):
       try:
-         self.db.cursor.execute(f"update comuna set nombre_ciudad='{self.nombre}', idProvincia={self.idProvincia} where idCiudad={self.id}")
+         self.db.cursor.execute(f"update Ciudad set nombre_ciudad='{self.nombre}', idProvincia={self.idProvincia} where idCiudad={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -74,7 +74,7 @@ class Comuna():
 
    def deleteComuna(self):
       try:
-         self.db.cursor.execute(f"delete from Ciudad where nombre_ciduad='{self.nombre}'")
+         self.db.cursor.execute(f"delete from Ciudad where nombre_ciudad='{self.nombre}'")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
