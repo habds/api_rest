@@ -32,7 +32,7 @@ class Provincia():
 
    def getProvincia(self):
       try:
-         self.db.cursor.execute(f'select idProvincia, nombre_provincia,idRegion from provincia where nombre_provincia="{self.nombre}"')
+         self.db.cursor.execute(f'select idProvincia, nombre_provincia,idRegion from Provincia where nombre_provincia="{self.nombre}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -45,7 +45,7 @@ class Provincia():
 
    def filtroRegion(self, region_id):
       try:
-         self.db.cursor.execute(f'select idProvincia, nombre_provincia, idRegion from provincia where idRegion = {region_id}')
+         self.db.cursor.execute(f'select idProvincia, nombre_provincia, idRegion from Provincia where idRegion = {region_id}')
       
          data = self.db.cursor.fetchall()
          dicDatos = {}

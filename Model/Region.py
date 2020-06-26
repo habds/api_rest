@@ -24,7 +24,7 @@ class Region():
 
    def getRegion(self):
       try:
-         self.db.cursor.execute(f'select idRegion, nombre_region from region where nombre_region="{self.nombre}"')
+         self.db.cursor.execute(f'select idRegion, nombre_region from Region where nombre_region="{self.nombre}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -36,7 +36,7 @@ class Region():
 
    def getRegionId(self):
       try:
-         self.db.cursor.execute(f'select idRegion, nombre_region from region where idRegion="{self.id}"')
+         self.db.cursor.execute(f'select idRegion, nombre_region from Region where idRegion="{self.id}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -62,7 +62,7 @@ class Region():
 
    def setRegion(self):
       try:
-         self.db.cursor.execute(f'insert into region(nombre) values("{self.nombre}")')
+         self.db.cursor.execute(f'insert into Region(nombre_region) values("{self.nombre}")')
          self.db.cursor.execute("commit;")
          self.getRegion()
          return True
@@ -72,7 +72,7 @@ class Region():
 
    def updateRegion(self):
       try:
-         self.db.cursor.execute(f"update region set nombre='{self.nombre}', code='{self.codigo}' where id={self.id}")
+         self.db.cursor.execute(f"update Region set nombre_region='{self.nombre}' where idRegion={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -81,7 +81,7 @@ class Region():
 
    def deleteRegion(self):
       try:
-         self.db.cursor.execute(f"delete from region where nombre='{self.nombre}'")
+         self.db.cursor.execute(f"delete from Region where nombre_region='{self.nombre}'")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
