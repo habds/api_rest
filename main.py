@@ -21,7 +21,7 @@ from Model.PagoTienda import PagoTienda
 from Model.Ticket import Ticket
 from Model.Support import Support
 from Model.Publicidad import Publicidad
-
+from Model.Report_type import Report_type
 
 import jwt
 import datetime
@@ -1009,9 +1009,9 @@ def deleteReporteType(idreport_type):
 
 #------------------------------------Report-------------------------------------------------------------
 
-@app.route('/reportetipo/<int:idreporttype>', methods=['GET'])
+@app.route('/reporte/<int:idreporttype>', methods=['GET'])
 
-def report_type(idreporttype):
+def reporte(idreporttype):
     rep = Report_type(id=idreporttype)
     if rep.getReportType():
         return jsonify({'message': 'Exitosamente', 'Report_Type': rep.dic()})
@@ -1019,23 +1019,23 @@ def report_type(idreporttype):
         return jsonify({"message":f'No existe ningun Report_Type con el id {idreporttype}'})
 
 
-@app.route('/reportetipo/', methods=['GET'])
+@app.route('/reporte/', methods=['GET'])
 # @token_required
-def report_types():
+def reportes():
     rep = Report_type()
     return jsonify(rep.getReportTypes())
 
-@app.route('/reportetipo/', methods=['POST'])
+@app.route('/reporte/', methods=['POST'])
 #@token_required
-def addReport_Type():
+def addReporte():
     rep = Report_type(descripcion=request.json['descripcion'], area=request.json['area'], area_code=request.json['area_code'])
     if rep.setReportType():
         return jsonify({'message':'Report Type creado exitosamente', 'Report Type': rep.dic()})
     else:
         return jsonify({'message':'Ha ocurrido un error al intentar crear el Report Type'})
 
-@app.route('/reportetipo/<int:idreport_type>', methods=['PUT'])
-def updateReportType(idreport_type):
+@app.route('/reporte/<int:idreport_type>', methods=['PUT'])
+def updateReporte(idreport_type):
     rep = Report_type(id=idreport_type)
     if rep.getReportType():
         rep.setDescripcion(request.json['descripcion'])
@@ -1047,8 +1047,8 @@ def updateReportType(idreport_type):
             return jsonify({'message':'Ha ocurrido un error al intentar actualizar el Report Type'})
 
 
-@app.route('/reportetipo/<int:idreport_type>', methods=['DELETE'])
-def deleteComuna(idreport_type):
+@app.route('/reporte/<int:idreport_type>', methods=['DELETE'])
+def deleteReporte(idreport_type):
     rep = Report_type(id=idreport_type)
     if rep.getReportType():
         if rep.deleteReportType():

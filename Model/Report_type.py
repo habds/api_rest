@@ -1,9 +1,15 @@
+import sys, os
+sys.path.append(os.getcwd())
+from conexion import DataBaseConexion
+import mysql.connector
+
 class Report_type(): 
    def __init__(self,id = 0,descripcion = '',area = '',area_code = ''): 
       self.id = id
       self.descripcion = descripcion
       self.area = area
       self.area_code = area_code
+      self.db = DataBaseConexion()
  
    def setId(self, id):
       self.id = id
