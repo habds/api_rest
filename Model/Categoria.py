@@ -67,7 +67,7 @@ class Categoria():
 
    def deleteCategoria(self):
       try:
-         self.db.cursor.execute(f"delete from {self.nombre} where nombre_categoria='{self.nombre}'")
+         self.db.cursor.execute(f"delete from {self.tabla} where nombre_categoria='{self.nombre}'")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:

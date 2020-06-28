@@ -48,9 +48,9 @@ class PagoTienda():
       listaDatos = []
 
       for registro in data:
-         dicDatos = {"id": registro[0], "nombre": registro[1]}
+         dicDatos = {"idPago tienda": registro[0], "id tienda": registro[1] , "id Metodo pago": registro[2]}
          listaDatos.append(dicDatos)
-      result = {'Message': 'Mostrando Metodos de pago', 'Metodo de pago': listaDatos}
+      result = {'Message': 'Mostrando pagos de tienda', 'Pago de tienda': listaDatos}
       return result
 
 

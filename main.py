@@ -329,13 +329,13 @@ def deleteCategoria(nombre_categoria):
     if cat.getCategoria():
         if cat.deleteCategoria():
             return jsonify({
-                'message': 'La categoria fue eliminada exitosamente',
+                'Message': 'La categoria fue eliminada exitosamente',
                 'Categoria': cat.dic()
             })
         else:
-            return jsonify({'message':'No ha sido posible eliminar la categoria'})
+            return jsonify({'Message':'No ha sido posible eliminar la categoria'})
     else:
-        return jsonify({'message':'No se encontro ninguna categoria para eliminar'})
+        return jsonify({'Message':'No se encontro ninguna categoria para eliminar'})
 
 #------------------------------------------------------------------
 #----------------------provincia----------------------------------------
@@ -467,9 +467,9 @@ def updateTienda(pNombre):
         tie.setNombre(request.json['nombre'])
         tie.setDireccion(request.json['direccion'])
         tie.setEmail(request.json['email'])
-        tie.setTelefono(request.json['telefono'])
-        tie.setIdComuna(request.json['idComuna'])
-        tie.setIdtipotienda(request.json['idTipoTienda'])
+        tie.setTelefono(int(request.json['telefono']))
+        tie.setIdComuna(int(request.json['idComuna']))
+        tie.setIdtipotienda(int(request.json['idTipoTienda']))
         if tie.updateTiendaTipo():
             return jsonify({'message':'Tienda actualizada Exitosamente', 'Tienda':tie.dic()})
         else:

@@ -31,7 +31,7 @@ class Tienda():
          self.email = email
  
    def setTelefono(self, telefono):
-      if telefono<10000000000:
+      if telefono < 10000000000:
          self.telefono = telefono
  
    def setIdComuna(self, idComuna):
@@ -69,14 +69,14 @@ class Tienda():
 
    def selectTienda(self):
       try:
-         self.db.cursor.execute(f'select idTienda, nombre_tienda, direccion, email, telefono, estatus, idtipotienda, idCiudad from Tienda where nombre_tienda="{self.nombre}"')
+         self.db.cursor.execute(f'select idTienda, nombre_tienda, direccion, email, telefono, estatus, idtipo_tienda, idCiudad from Tienda where nombre_tienda="{self.nombre}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
             self.setNombre(f'{obj[1]}')
             self.setDireccion(f'{obj[2]}')
             self.setEmail(f'{obj[3]}')
-            self.setTelefono(f'{obj[4]}')
+            self.setTelefono(int(f'{obj[4]}'))
             self.setEstatus(f'{obj[5]}')
             self.setIdComuna(f'{obj[6]}')
             self.setIdtipotienda(f'{obj[7]}')
@@ -118,7 +118,7 @@ class Tienda():
 
    def createTienda(self):
       try:
-         self.db.cursor.execute(f'insert into Tienda(nombre_tienda, direccion, email, telefono, estatus, idtipotienda, idCiudad) values("{self.nombre}","{self.direccion}","{self.email}",{self.telefono},{self.estatus},{self.idComuna},{self.idTipoTienda})')
+         self.db.cursor.execute(f'insert into Tienda(nombre_tienda, direccion, email, telefono, estatus, idtipo_tienda, idCiudad) values("{self.nombre}","{self.direccion}","{self.email}",{self.telefono},{self.estatus},{self.idTipoTienda},{self.idComuna})')
          self.db.cursor.execute("commit;")
          self.selectTienda()
          return True
@@ -128,7 +128,7 @@ class Tienda():
 
    def updateTiendaTipo(self):
       try:
-         self.db.cursor.execute(f"update Tienda set nombre_tienda='{self.nombre}', direccion='{self.direccion}', email='{self.email}', telefono={self.telefono},estatus={self.estatus}, idcomuna={self.idComuna}, idtipotienda={self.idTipoTienda} where idTienda={self.id}")
+         self.db.cursor.execute(f"update Tienda set nombre_tienda='{self.nombre}', direccion='{self.direccion}', email='{self.email}' , telefono={self.telefono}, estatus={self.estatus}, idtipo_tienda={self.idTipoTienda}, idciudad={self.idComuna} where idTienda={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -146,7 +146,7 @@ class Tienda():
 
 
    def dic(self):
-      diccionario = {'id': self.id, 'nombre': self.nombre, 'direccion':self.direccion, 'email':self.direccion, 'telefono':self.telefono, 'estatus' : self.estatus ,'idComuna':self.idComuna, 'idTipoTienda':self.idTipoTienda}
+      diccionario = {'id': self.id, 'nombre': self.nombre, 'direccion':self.direccion, 'email':self.email, 'telefono':self.telefono, 'estatus' : self.estatus ,'idComuna':self.idComuna, 'idTipoTienda':self.idTipoTienda}
       return diccionario
 
  
