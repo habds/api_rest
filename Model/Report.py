@@ -42,48 +42,48 @@ def getReport(self):
          return False
 
 
-   def getReport(self):
-      self.db.cursor.execute('select idReport, desc, code, idReport_Type from Report')
-      data = self.db.cursor.fetchall()
-      dicDatos = {}
-      listaDatos = []
+def getReport(self):
+   self.db.cursor.execute('select idReport, desc, code, idReport_Type from Report')
+   data = self.db.cursor.fetchall()
+   dicDatos = {}
+   listaDatos = []
 
-      for registro in data:
-         dicDatos = {"id": registro[0], "descripcion": registro[1], 'codigo': registro[2], 'idReport_Type': registro[3]}
-         listaDatos.append(dicDatos)
-      result = {'Message': 'Mostrando Reportes', 'Reportes': listaDatos}
-      return result
-
-
-   def setReport(self):
-      try:
-         self.db.cursor.execute(f'insert into Report(desc, code, idReport_Type) values("{self.descripcion}", "{self.codigo}", {self.idReport_Type})')
-         self.db.cursor.execute("commit;")
-         self.getSexo()
-         return True
-      except mysql.connector.Error as err:
-         print("Ha ocurrido un error: {}".format(err))
-         return  False
-
-   def updateReportType(self):
-      try:
-         self.db.cursor.execute(f"update Report_Type set desc='{self.descripcion}', code='{self.codigo}', idReport_Type='{self.idReport_Type}' where idReport_Type={self.id}")
-         self.db.cursor.execute("commit;")
-         return True
-      except mysql.connector.Error as err:
-         print(err)
-         return False
-
-   def deleteReportType(self):
-      try:
-         self.db.cursor.execute(f"delete from Report_Type where idReport_Type='{self.id}'")
-         self.db.cursor.execute("commit;")
-         return True
-      except mysql.connector.Error as err:
-         print(f"Ha ocurrido un error: {err}")
-         return False
+   for registro in data:
+      dicDatos = {"id": registro[0], "descripcion": registro[1], 'codigo': registro[2], 'idReport_Type': registro[3]}
+      listaDatos.append(dicDatos)
+   result = {'Message': 'Mostrando Reportes', 'Reportes': listaDatos}
+   return result
 
 
-   def dic(self):
-      diccionario = {"id": self.id, "descripcion": self.descripcion, 'codigo': self.codigo, 'idReport_Type': self.idReport_Type}
-      return diccionario
+def setReport(self):
+   try:
+      self.db.cursor.execute(f'insert into Report(desc, code, idReport_Type) values("{self.descripcion}", "{self.codigo}", {self.idReport_Type})')
+      self.db.cursor.execute("commit;")
+      self.getSexo()
+      return True
+   except mysql.connector.Error as err:
+      print("Ha ocurrido un error: {}".format(err))
+      return  False
+
+def updateReportType(self):
+   try:
+      self.db.cursor.execute(f"update Report_Type set desc='{self.descripcion}', code='{self.codigo}', idReport_Type='{self.idReport_Type}' where idReport_Type={self.id}")
+      self.db.cursor.execute("commit;")
+      return True
+   except mysql.connector.Error as err:
+      print(err)
+      return False
+
+def deleteReportType(self):
+   try:
+      self.db.cursor.execute(f"delete from Report_Type where idReport_Type='{self.id}'")
+      self.db.cursor.execute("commit;")
+      return True
+   except mysql.connector.Error as err:
+      print(f"Ha ocurrido un error: {err}")
+      return False
+
+
+def dic(self):
+   diccionario = {"id": self.id, "descripcion": self.descripcion, 'codigo': self.codigo, 'idReport_Type': self.idReport_Type}
+   return diccionario

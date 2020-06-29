@@ -22,6 +22,7 @@ from Model.Ticket import Ticket
 from Model.Support import Support
 from Model.Publicidad import Publicidad
 from Model.Report_type import Report_type
+from Model.Report
 
 import jwt
 import datetime
@@ -1009,57 +1010,57 @@ def deleteReporteType(idreport_type):
 
 #------------------------------------Report-------------------------------------------------------------
 
-@app.route('/reporte/<int:idreporttype>', methods=['GET'])
+@app.route('/reporte/<int:idreport>', methods=['GET'])
 
-def reporte(idreporttype):
-    rep = Report_type(id=idreporttype)
-    if rep.getReportType():
-        return jsonify({'message': 'Exitosamente', 'Report_Type': rep.dic()})
+def reporte(idreport):
+    rep = Report(id=idreport)
+    if rep.getReport():
+        return jsonify({'message': 'Exitosamente', 'Report': rep.dic()})
     else:
-        return jsonify({"message":f'No existe ningun Report_Type con el id {idreporttype}'})
+        return jsonify({"message":f'No existe ningun Report con el id {idreport}'})
 
 
 @app.route('/reporte/', methods=['GET'])
 # @token_required
 def reportes():
-    rep = Report_type()
-    return jsonify(rep.getReportTypes())
+    rep = Report()
+    return jsonify(rep.getReports())
 
 @app.route('/reporte/', methods=['POST'])
 #@token_required
 def addReporte():
-    rep = Report_type(descripcion=request.json['descripcion'], area=request.json['area'], area_code=request.json['area_code'])
-    if rep.setReportType():
-        return jsonify({'message':'Report Type creado exitosamente', 'Report Type': rep.dic()})
+    rep = Report(descripcion=request.json['descripcion'], codigo=request.json['codigo'], idReport_Type=request.json['idReport_Type'])
+    if rep.setReport():
+        return jsonify({'message':'Reportcreado exitosamente', 'Report': rep.dic()})
     else:
-        return jsonify({'message':'Ha ocurrido un error al intentar crear el Report Type'})
+        return jsonify({'message':'Ha ocurrido un error al intentar crear el Report'})
 
-@app.route('/reporte/<int:idreport_type>', methods=['PUT'])
-def updateReporte(idreport_type):
-    rep = Report_type(id=idreport_type)
-    if rep.getReportType():
+@app.route('/reporte/<int:idreport>', methods=['PUT'])
+def updateReporte(idreport):
+    rep = Report(id=idreport)
+    if rep.getReport():
         rep.setDescripcion(request.json['descripcion'])
-        rep.setArea(request.json['area'])
-        rep.setArea_code(request.json['area_code'])
-        if rep.updateReportType():
-            return jsonify({'message':'Report Type Actualizado Exitosamente', 'Report Type':rep.dic()})
+        rep.setCodigo(request.json['codigo'])
+        rep.idreport_type = request.json['area_code']
+        if rep.updateReport:
+            return jsonify({'message':'Report Actualizado Exitosamente', 'Report':rep.dic()})
         else:
-            return jsonify({'message':'Ha ocurrido un error al intentar actualizar el Report Type'})
+            return jsonify({'message':'Ha ocurrido un error al intentar actualizar el Report'})
 
 
-@app.route('/reporte/<int:idreport_type>', methods=['DELETE'])
-def deleteReporte(idreport_type):
-    rep = Report_type(id=idreport_type)
-    if rep.getReportType():
-        if rep.deleteReportType():
+@app.route('/reporte/<int:idreport', methods=['DELETE'])
+def deleteReporte(idreport):
+    rep = Report(id=idreport)
+    if rep.getReport():
+        if rep.deleteReport():
             return jsonify({
-                'message': 'El Report Type fue eliminado exitosamente',
-                'Report Type': rep.dic()
+                'message': 'El Report fue eliminado exitosamente',
+                'Report': rep.dic()
             })
         else:
-            return jsonify({'message':'No ha sido posible eliminar el Report Type'})
+            return jsonify({'message':'No ha sido posible eliminar el Report'})
     else:
-        return jsonify({'message':'No se encontro ningun Report Type para eliminar'})
+        return jsonify({'message':'No se encontro ningun Report para eliminar'})
 
 
 
