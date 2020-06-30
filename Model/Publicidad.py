@@ -2,7 +2,7 @@ import sys, os
 sys.path.append(os.getcwd())
 from conexion import DataBaseConexion
 import mysql.connector
-import datetime
+from datetime import datetime
 
 class Publicidad(): 
    tabla = "Publicidad"
@@ -66,7 +66,11 @@ class Publicidad():
 
    def insert(self):
       try:
-         self.db.cursor.execute(f"insert into {self.tabla}(inicio, termino, nombre_empresa) values('{self.f_inicio}', '{self.f_termino}', {self.compania})")
+         # fInicio = self.tFecha(self.f_inicio)
+         # fTermino = self.tFecha(self.f_termino)
+         # test = self.tFecha("10-12-19")
+         #self.db.cursor.execute(f"insert into {self.tabla}(inicio, termino, nombre_empresa) values({test},{fTermino},'{self.compania}')")
+         self.db.cursor.execute(f"insert into {self.tabla}(inicio, termino, nombre_empresa) values(STR_TO_DATE('{self.f_inicio}','%d-%m-%y'),STR_TO_DATE('{self.f_termino}','%d-%m-%y'),'{self.compania}')")
          self.db.cursor.execute("commit;")
          self.search()
          return True
@@ -76,7 +80,7 @@ class Publicidad():
 
    def update(self):
       try:
-         self.db.cursor.execute(f"update {self.tabla} set inicio={self.f_inicio}, termino={self.f_termino}, nombre_empresa={self.compania} where idPublicidad={self.id}")
+         self.db.cursor.execute(f"update {self.tabla} set inicio=STR_TO_DATE('{self.f_inicio}','%d-%m-%y'), termino=STR_TO_DATE('{self.f_termino}','%d-%m-%y'), nombre_empresa='{self.compania}' where idPublicidad={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -91,6 +95,11 @@ class Publicidad():
       except mysql.connector.Error as err:
          print(f"Ha ocurrido un error: {err}")
          return False
+
+   def tFecha(self, pFecha):
+      date = datetime.strptime(pFecha, '%d-%m-%y').date()
+      return date
+      
 
    def dic(self):
       diccionario = {'IdPublicidad': self.id, 'Fecha de Inicio' : self.f_inicio, 'Fecha de Termino': self.f_termino, 'Nombre de empresa' : self.compania}

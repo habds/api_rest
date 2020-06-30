@@ -876,7 +876,7 @@ def updateSupport(pId):
         sup.setCodigo(request.json['codigo'])
         sup.setIdTicket(request.json['idticket'])
         if sup.updateSup():
-            return jsonify({'Message':'El support ha sido actualizado Exitosamente', 'Support':sup.dic()})
+            return jsonify({'Message':'Support ha sido actualizado Exitosamente', 'Support':sup.dic()})
         else:
             return jsonify({'Message':'Ha ocurrido un error al intentar actualizar el support'})
     else:

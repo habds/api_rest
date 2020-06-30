@@ -6,7 +6,7 @@ matias
 	tienda						listo
 	metodo de pago				listo
 	pago tienda					listo Error al visualizar luego de agregar
-	ticket
-	support
-	publicidad
+	ticket						listo Error al visualizar luego de agregar
+	support						listo  Error al visualizar luego de agregar
+	publicidad					listo	Error al visualizar luego de agregar
 	categoria					listo
