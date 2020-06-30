@@ -54,7 +54,7 @@ class Report_type():
 
 
    def getReportTypes(self):
-      self.db.cursor.execute('select dReport_Type, desc, area, area_code from Report_Type')
+      self.db.cursor.execute('select idReport_Type, desc, area, area_code from Report_Type')
       data = self.db.cursor.fetchall()
       dicDatos = {}
       listaDatos = []
