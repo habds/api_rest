@@ -22,7 +22,7 @@ from Model.Ticket import Ticket
 from Model.Support import Support
 from Model.Publicidad import Publicidad
 from Model.Report_type import Report_type
-from Model.Report
+from Model.Report import Report
 
 import jwt
 import datetime
@@ -1041,14 +1041,14 @@ def updateReporte(idreport):
     if rep.getReport():
         rep.setDescripcion(request.json['descripcion'])
         rep.setCodigo(request.json['codigo'])
-        rep.idreport_type = request.json['area_code']
+        rep.idreport_type = request.json['idReport_Type']
         if rep.updateReport:
             return jsonify({'message':'Report Actualizado Exitosamente', 'Report':rep.dic()})
         else:
             return jsonify({'message':'Ha ocurrido un error al intentar actualizar el Report'})
 
 
-@app.route('/reporte/<int:idreport', methods=['DELETE'])
+@app.route('/reporte/<int:idreport>', methods=['DELETE'])
 def deleteReporte(idreport):
     rep = Report(id=idreport)
     if rep.getReport():
@@ -1065,6 +1065,6 @@ def deleteReporte(idreport):
 
 
 
-#------------------------------------Fin Report Type-------------------------------------------------------------
+#------------------------------------Fin Report-------------------------------------------------------------
 if __name__ == '__main__':
  app.run(debug=True)
