@@ -67,7 +67,7 @@ class Producto():
          return False
 
    def getProductos(self):
-      self.db.cursor.execute('select idProducto, nombre_producto, descripcion, precio, idCategoria from Producto from producto')
+      self.db.cursor.execute('select idProducto, nombre_producto, descripcion, precio, idCategoria from Producto')
       data = self.db.cursor.fetchall()
       dicDatos = {}
       listaDatos = []
