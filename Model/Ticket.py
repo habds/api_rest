@@ -59,7 +59,7 @@ class Ticket():
 
    def insertTicket(self):
       try:
-         self.db.cursor.execute(f'insert into {self.tabla}(ticket_abierto, estado) values({self.ticket_abierto}, {self.estado})')
+         self.db.cursor.execute(f"insert into {self.tabla}(ticket_abierto, estado) values('{self.ticket_abierto}', '{self.estado}')")
          self.db.cursor.execute("commit;")
          self.searchTicket()
          return True
