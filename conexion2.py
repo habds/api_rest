@@ -5,7 +5,7 @@ import mysql.connector
 class DataBaseConexion():
     def __init__(self):
         try:
-            self.db = mysql.connector.connect(host='198.37.123.229', port=3306, user='electroa_sudo', password='quesocaliente', database='electroa_api')
+            self.db = mysql.connector.connect(host='201.148.104.16', port=3306, user='rollback_test', password='Ayrton2020', database='rollback_BApp')
             self.cursor = self.db.cursor()
             print('Conexion Exitosa')
         except mysql.connector.Error as err:
