@@ -254,7 +254,7 @@ def productos():
 
 @app.route('/producto/', methods=['POST'])
 def addProducto():
-    prod = Producto(nombre=request.json['nombre'], descripcion=request.json['descripcion'], precio=request.json['precio'], idcategoria=request.json['idcategoria'])
+    prod = Producto(nombre=request.json['nombre'], descripcion=request.json['descripcion'], precio=request.json['precio'], idcategoria=request.json['idCategoria'])
     if prod.setProducto():
         return jsonify({'message':'Producto creado exitosamente', 'Producto': prod.dic()})
     else:
@@ -267,7 +267,7 @@ def updateProducto(id_producto):
         prod.setNombre(request.json['nombre'])
         prod.setDescripcion(request.json['descripcion'])
         prod.setPrecio(request.json['precio'])
-        prod.idcategoria = request.json['idcategoria']
+        prod.idcategoria = request.json['idCategoria']
         if prod.updateProducto():
             return jsonify({'message':'Producto Actualizado Exitosamente', 'Producto':prod.dic()})
         else:

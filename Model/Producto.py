@@ -81,7 +81,7 @@ class Producto():
 
    def setProducto(self):
       try:
-         self.db.cursor.execute(f'insert into producto(nombre_producto, descripcion, precio, idCategoria) values("{self.nombre}","{self.descripcion}", {self.precio}, {self.idcategoria})')
+         self.db.cursor.execute(f'insert into Producto(nombre_producto, descripcion, precio, idCategoria) values("{self.nombre}","{self.descripcion}", {self.precio}, {self.idcategoria})')
          self.db.cursor.execute("commit;")
          self.getProductoByNombre()
          return True
