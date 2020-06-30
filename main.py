@@ -657,7 +657,7 @@ def personas():
 @app.route('/persona/', methods=['POST'])
 def addPersona():
     per = Persona(run=request.json['run'], dv=request.json['dv'],nombres=request.json['nombre'], a_paterno=request.json['a_paterno'],a_materno=request.json['a_materno'],
-                  correo=request.json['correo'],fono=request.json['fono'], ,fono2=request.json['fono2'], ,fono3=request.json['fono3'], idComuna=request.json['idComuna'],idGenero=request.json['idGenero'])
+                  correo=request.json['correo'],fono=request.json['fono'], fono2=request.json['fono2'], fono3=request.json['fono3'], idComuna=request.json['idComuna'],idGenero=request.json['idGenero'])
     if per.insertPersona():
         return jsonify({'message':'Persona agregada exitosamente', 'Persona': per.dic()})
     else:
