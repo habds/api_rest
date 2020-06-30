@@ -38,7 +38,7 @@ class Producto():
 
    def getProducto(self):
       try:
-         self.db.cursor.execute(f'select id, nombre, descripcion, precio, idcategoria from producto where id="{self.id}"')
+         self.db.cursor.execute(f'select idProducto, nombre_producto, descripcion, precio, idCategoria from Producto where idProducto="{self.id}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -53,7 +53,7 @@ class Producto():
 
    def getProductoByNombre(self):
       try:
-         self.db.cursor.execute(f'select id, nombre, descripcion, precio, idcategoria from producto where nombre="{self.nombre}"')
+         self.db.cursor.execute(f'select idProducto, nombre_producto, descripcion, precio, idCategoria from Producto where nombre_producto="{self.nombre}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -67,7 +67,7 @@ class Producto():
          return False
 
    def getProductos(self):
-      self.db.cursor.execute('select id, nombre, descripcion, precio, idcategoria from producto')
+      self.db.cursor.execute('select idProducto, nombre_producto, descripcion, precio, idCategoria from Producto from producto')
       data = self.db.cursor.fetchall()
       dicDatos = {}
       listaDatos = []
@@ -81,7 +81,7 @@ class Producto():
 
    def setProducto(self):
       try:
-         self.db.cursor.execute(f'insert into producto(nombre, descripcion, precio, idcategoria) values("{self.nombre}","{self.descripcion}", {self.precio}, {self.idcategoria})')
+         self.db.cursor.execute(f'insert into producto(nombre_producto, descripcion, precio, idCategoria) values("{self.nombre}","{self.descripcion}", {self.precio}, {self.idcategoria})')
          self.db.cursor.execute("commit;")
          self.getProductoByNombre()
          return True
@@ -91,7 +91,7 @@ class Producto():
 
    def updateProducto(self):
       try:
-         self.db.cursor.execute(f"update producto set nombre='{self.nombre}', descripcion='{self.descripcion}', precio={self.precio}, idcategoria={self.idcategoria} where id={self.id}")
+         self.db.cursor.execute(f"update Producto set nombre_producto='{self.nombre}', descripcion='{self.descripcion}', precio={self.precio}, idCategoria={self.idcategoria} where idProducto={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -100,7 +100,7 @@ class Producto():
 
    def deleteProducto(self):
       try:
-         self.db.cursor.execute(f"delete from producto where id={self.id}")
+         self.db.cursor.execute(f"delete from Producto where idProducto={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:

@@ -657,7 +657,7 @@ def personas():
 @app.route('/persona/', methods=['POST'])
 def addPersona():
     per = Persona(run=request.json['run'], dv=request.json['dv'],nombres=request.json['nombre'], a_paterno=request.json['a_paterno'],a_materno=request.json['a_materno'],
-                  idGenero=request.json['idgenero'],fono=request.json['n_contacto'], fecha_n=request.json['fecha_n'],email=request.json['email'], idComuna=request.json['idcomuna'])
+                  correo=request.json['correo'],fono=request.json['fono'], ,fono2=request.json['fono2'], ,fono3=request.json['fono3'], idComuna=request.json['idComuna'],idGenero=request.json['idGenero'])
     if per.insertPersona():
         return jsonify({'message':'Persona agregada exitosamente', 'Persona': per.dic()})
     else:
@@ -672,11 +672,12 @@ def updatePersona(pRun):
         per.setNombres(request.json['nombre'])
         per.setA_paterno(request.json['a_paterno'])
         per.setA_materno(request.json['a_materno'])
-        per.setIdgenero(request.json['idgenero'])
-        per.setFono(request.json['n_contacto'])
-        per.setFecha_n(request.json['fecha_n'])
-        per.setEmail(request.json['email'])
-        per.setIdcomuna(request.json['idcomuna'])
+        per.setEmail(request.json['correo'])
+        per.setFono(request.json['fono'])
+        per.setFono2(request.json['fono2'])
+        per.setFono3(request.json['fono3'])
+        per.setIdcomuna(request.json['idComuna'])
+        per.setIdgenero(request.json['idGenero'])
         if per.updatePersona():
             return jsonify({'message':'Datos de la persona actualizados Exitosamente', 'Persona':per.dic()})
         else:

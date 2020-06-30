@@ -2,18 +2,19 @@ from conexion2 import DataBaseConexion
 import mysql.connector
 
 class Persona(): 
-   def __init__(self,id = 0,run = '',dv = '',nombres = '',a_paterno = '',a_materno = '',idGenero = 0,fono = '',fecha_n = '',email = '',idComuna = ''): 
+   def __init__(self,id = 0,run = '',dv = '',nombres = '',a_paterno = '',a_materno = '',correo = '',fono = '', fono2 = '',fono3 = '',idComuna = '', idGenero = 0): 
       self.id = id
       self.run = run
       self.dv = dv
       self.nombres = nombres
       self.a_paterno = a_paterno
       self.a_materno = a_materno
-      self.idGenero = idGenero
+      self.correo = correo
       self.fono = fono
-      self.fecha_n = fecha_n
-      self.email = email
-      self.idComuna = idComuna
+      self.fono2 = fono2
+      self.fono3 = fono3
+      self.idComuna = comuna
+      self.idGenero = idGenero
       self.db = DataBaseConexion()
  
    def setId(self, id):
@@ -39,9 +40,12 @@ class Persona():
  
    def setFono(self, fono):
       self.fono = fono
- 
-   def setFecha_n(self, fecha_n):
-      self.fecha_n = fecha_n
+   
+   def setFono2(self, fono2):
+      self.fono2 = fono2
+   
+   def setFono3(self,fono3):
+      self.fono3 = fono3
  
    def setEmail(self, email):
       self.email = email
@@ -73,8 +77,6 @@ class Persona():
    def getFono(self):
       return self.fono
  
-   def getFecha_n(self):
-      return self.fecha_n
  
    def getEmail(self):
       return self.email
@@ -84,7 +86,7 @@ class Persona():
 
    def searchPersona(self):
       try:
-         self.db.cursor.execute(f'select id, run, dv, nombre, a_paterno, a_materno, idgenero, n_contacto, fecha_n, email, idcomuna from persona where run="{self.run}"')
+         self.db.cursor.execute(f'select idPersona, run, dv, nombres, apellido_paterno, apellido_materno, correo, telefono, telefono2, telefono3, idCiudad, idGenero  from Persona where run="{self.run}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -93,11 +95,13 @@ class Persona():
             self.setNombres(obj[3])
             self.setA_paterno(obj[4])
             self.setA_materno(obj[5])
-            self.setIdgenero(obj[6])
-            self.setFono(obj[7])
-            self.setFecha_n(obj[8])
-            self.setEmail(obj[9])
-            self.setIdcomuna(obj[10])
+            self.setEmail(obj[6])
+            self.setFono(obj[8])
+            self.setFono2(obj[9])
+            self.setFono3(obj[10])
+            self.setIdcomuna(obj[11])
+            self.setIdgenero(obj[12])
+            
             return True
       except mysql.connector.Error as err:
          print(err)
@@ -105,7 +109,7 @@ class Persona():
 
    def searchPersonaById(self):
       try:
-         self.db.cursor.execute(f'select id, run, dv, nombre, a_paterno, a_materno, idgenero, n_contacto, fecha_n, email, idcoomuna from persona where id="{self.id}"')
+         self.db.cursor.execute(f'select idPersona, run, dv, nombres, apellido_paterno, apellido_materno, correo, telefono, telefono2, telefono3, idCiudad, idGenero  from Persona where idPersona="{self.id}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -114,11 +118,12 @@ class Persona():
             self.setNombres(obj[3])
             self.setA_paterno(obj[4])
             self.setA_materno(obj[5])
-            self.setIdgenero(obj[6])
-            self.setFono(obj[7])
-            self.setFecha_n(obj[8])
-            self.setEmail(obj[9])
-            self.setIdcomuna(obj[10])
+            self.setEmail(obj[6])
+            self.setFono(obj[8])
+            self.setFono2(obj[9])
+            self.setFono3(obj[10])
+            self.setIdcomuna(obj[11])
+            self.setIdgenero(obj[12])
             return True
       except mysql.connector.Error as err:
          print(err)
@@ -126,14 +131,14 @@ class Persona():
 
 
    def selectPersonas(self):
-      self.db.cursor.execute('select id, run, dv, nombre, a_paterno, a_materno, idgenero, n_contacto, fecha_n, email, idcomuna from persona')
+      self.db.cursor.execute('select idPersona, run, dv, nombres, apellido_paterno, apellido_materno, correo, telefono, telefono2, telefono3, idCiudad, idGenero from Persona')
       data = self.db.cursor.fetchall()
       dicDatos = {}
       listaDatos = []
       for registro in data:
-         dicDatos = {"id": registro[0], "run": registro[1], 'dv': registro[2], "nombre": registro[3], 'a_paterno': registro[4]
-                     , "a_materno": registro[5], 'idgenero': registro[6], "fono": registro[7], 'fecha_n': registro[8]
-                     , "email": registro[9],'idcomuna': registro[10]}
+         dicDatos = {"id": registro[0], "run": registro[1], 'dv': registro[2], "nombres": registro[3], 'a_paterno': registro[4]
+                     , "a_materno": registro[5], 'correo': registro[6], "fono": registro[7], 'fono2': registro[8]
+                     , "fono3": registro[9],'idcomuna': registro[10], 'idGenero': registro[11]}
          listaDatos.append(dicDatos)
       result = {'Message': 'Mostrando Personas', 'Personas': listaDatos}
       return result
@@ -141,7 +146,7 @@ class Persona():
 
    def insertPersona(self):
       try:
-         self.db.cursor.execute(f'insert into persona(run, dv, nombre, a_paterno, a_materno, idgenero, n_contacto, fecha_n, email, idcomuna) values("{self.run}","{self.dv}","{self.nombres}","{self.a_paterno}","{self.a_materno}",{self.idGenero},"{self.fono}","{self.fecha_n}","{self.email}",{self.idComuna})')
+         self.db.cursor.execute(f'insert into Persona(run, dv, nombres, apellido_paterno, apellido_materno, correo, telefono, telefono2, telefono3, idCiudad, idGenero) values("{self.run}","{self.dv}","{self.nombres}","{self.a_paterno}","{self.a_materno}",{self.correo},"{self.fono}","{self.fono2}","{self.fono3}","{self.idComuna}","{self.idGenero}")')
          self.db.cursor.execute("commit;")
          self.searchPersona()
          return True
@@ -151,7 +156,7 @@ class Persona():
 
    def updatePersona(self):
       try:
-         self.db.cursor.execute(f"update persona set run='{self.run}', dv='{self.dv}', nombre='{self.nombres}', a_paterno='{self.a_paterno}', a_materno='{self.a_materno}', idgenero={self.idGenero}, n_contacto='{self.fono}', fecha_n='{self.fecha_n}', email='{self.email}', idcomuna={self.idComuna} where id={self.id}")
+         self.db.cursor.execute(f"update Persona set run='{self.run}', dv='{self.dv}', nombres='{self.nombres}', apellido_paterno='{self.a_paterno}', apellido_materno='{self.a_materno}', correo={self.correo}, telefono='{self.fono}', telefono2='{self.fono2}', telefono3='{self.fono3}', email='{self.email}', idcomuna={self.idComuna} where idPersona={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -160,7 +165,7 @@ class Persona():
 
    def deletePersona(self):
       try:
-         self.db.cursor.execute(f"delete from persona where run='{self.run}'")
+         self.db.cursor.execute(f"delete from Persona where run='{self.run}'")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -169,8 +174,8 @@ class Persona():
 
 
    def dic(self):
-      diccionario = {'id': self.id, 'run' : self.run, 'dv' : self.dv, 'nombre' :self.nombres, 'a_paterno' : self.a_paterno, 'a_materno' : self.a_materno, 'idgenero' : self.idGenero, 'n_contacto' : self.fono, 'fecha_n' : self.fecha_n,'email' : self.email, 'idCiudad ' : self.idComuna}
+      diccionario = {'id': self.id, 'run' : self.run, 'dv' : self.dv, 'nombre' :self.nombres, 'a_paterno' : self.a_paterno, 'a_materno' : self.a_materno, 'correo' : self.correo, 'fono' : self.fono, 'fono2' : self.fono2, 'fono3' : self.fono3, 'idComuna' : self.idComuna,'idGenero' : self.idGenero}
       return diccionario   
  
    def __str__(self):
-      return str(self.id), str(self.run), str(self.dv), str(self.nombres), str(self.a_paterno), str(self.a_materno), str(self.idGenero), str(self.fono), str(self.fecha_n), str(self.email), str(self.idComuna)
+      return str(self.id), str(self.run), str(self.dv), str(self.nombres), str(self.a_paterno), str(self.a_materno), str(self.correo), str(self.fono),str(self.fono2),str(self.fon3), str(self.idComuna), str(self.idGenero)
