@@ -1191,68 +1191,6 @@ def deleteAnuncio(idanuncio):
 
 #------------------------------------Fin Anuncio-------------------------------------------------------------
 
-#------------------------------------Usr_msg-Anuncio-------------------------------------------------------------
-
-@app.route('/anuncio/<int:idanuncio>', methods=['GET'])
-
-def anuncio(idanuncio):
-    anuncio = USR_MSG(idUSR_MSG=idanuncio)
-    if anuncio.getUsr_msg():
-        return jsonify({'message': 'Exitosamente', 'Anuncio': anuncio.dic()})
-    else:
-        return jsonify({"message":f'No existe ningun Anuncio con el id {idanuncio}'})
-
-
-@app.route('/anuncio/', methods=['GET'])
-# @token_required
-def anuncios():
-    anuncio = USR_MSG()
-    return jsonify(anuncio.getUsr_msgs())
-
-@app.route('/anuncio/', methods=['POST'])
-#@token_required
-def addAnuncio():
-    anuncio = USR_MSG(nombre=request.json['nombre'],descripcion=request.json['descripcion'], precio_anuncio=request.json['precio'], estatus=request.json['estatus'], Rate_Container=request.json['Rate_Container'], idRate_MSG=request.json['idRate_MSG'], idProducto=request.json['idProducto'])
-    if anuncio.setUsr_msg():
-        return jsonify({'message':'Anuncio creado exitosamente', 'Anuncio': anuncio.dic()})
-    else:
-        return jsonify({'message':'Ha ocurrido un error al intentar crear el anuncio'})
-
-@app.route('/anuncio/<int:idanuncio>', methods=['PUT'])
-def updateAnuncio(idanuncio):
-    anuncio = USR_MSG(id=idanuncio)
-    if anuncio.getUsr_msg():
-        anuncio.setNombre
-        anuncio.setDescripcion(request.json['descripcion'])
-        anuncio.setPrecio_anuncio(request.json['precio'])
-        anuncio.setEstatus(request.json['estatus'])
-        anuncio.setRate_container('Rate_Container')
-        anuncio.setIdrate_msg(request.json['idRate_MSG'])
-        anuncio.setIdproducto(request.json['idProducto'])
-        if anuncio.updateUsr_msg():
-            return jsonify({'message':'Anuncio Actualizado Exitosamente', 'Anuncio':anuncio.dic()})
-        else:
-            return jsonify({'message':'Ha ocurrido un error al intentar actualizar el anuncio'})
-
-
-@app.route('/anuncio/<int:idanuncio>', methods=['DELETE'])
-def deleteAnuncio(idanuncio):
-    anuncio = USR_MSG(idUSR_MSG=idanuncio)
-    if anuncio.getUsr_msg():
-        if anuncio.deleteUsr_msg():
-            return jsonify({
-                'message': 'El Anuncio fue eliminado exitosamente',
-                'Anuncio': anuncio.dic()
-            })
-        else:
-            return jsonify({'message':'No ha sido posible eliminar el anuncio'})
-    else:
-        return jsonify({'message':'No se encontro ningun anuncio para eliminar'})
-
-
-
-
-#------------------------------------Fin Anuncio-------------------------------------------------------------
 
 if __name__ == '__main__':
  app.run(debug=True)
