@@ -31,13 +31,12 @@ class Rol():
 
    def searchRol(self):
       try:
-         self.db.cursor.execute(f'select idRoles, nombre_rol from roles where nombre_rol="{self.nombre}"')
+         self.db.cursor.execute(f'select idRoles, nombre_rol from Roles where nombre_rol="{self.nombre}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
             self.setNombre(f'{obj[1]}')
             
-            self.setCodigo(obj[2])
             return True
       except mysql.connector.Error as err:
          print(err)
@@ -45,12 +44,11 @@ class Rol():
 
    def searchRolById(self):
       try:
-         self.db.cursor.execute(f'select id, nombre, code from region where id="{self.id}"')
+         self.db.cursor.execute(f'select idRoles, nombre_rol from Roles where idRoles="{self.id}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
             self.setNombre(f'{obj[1]}')
-            self.setCodigo(obj[2])
             return True
       except mysql.connector.Error as err:
          print(err)
@@ -58,7 +56,7 @@ class Rol():
 
 
    def selectRoles(self):
-      self.db.cursor.execute('select idRoles, nombre_rol from roles')
+      self.db.cursor.execute('select idRoles, nombre_rol from Roles')
       data = self.db.cursor.fetchall()
       dicDatos = {}
       listaDatos = []

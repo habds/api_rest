@@ -38,7 +38,7 @@ class Producto():
 
    def getProducto(self):
       try:
-         self.db.cursor.execute(f'select idProducto, nombre_producto, descripcion, precio, idCategoria from Producto where idProducto="{self.id}"')
+         self.db.cursor.execute(f'select idProducto, nombre_producto, descripcion, precio, idCategoria from Producto where idProducto={self.id}')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
