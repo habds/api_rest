@@ -13,7 +13,7 @@ class Estado():
       return self.id
  
    def getNombre(self):
-      return self.nombre
+      return self.nombre   
  
    def __str__(self):
-      return str(self.id), str(self.nombre)
+      return str(self.id), self.nombre

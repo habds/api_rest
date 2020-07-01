@@ -42,7 +42,7 @@ class Login():
  
    def searchLogin(self):
       try:
-         self.db.cursor.execute(f'select id, username, password, idPersona, idRol from login where username="{self.username}" and password="{self.password}"')
+         self.db.cursor.execute(f'select idUsuario, nombre_usuario, password, idPersona, idRoles from Login where username="{self.username}" and password="{self.password}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -57,7 +57,7 @@ class Login():
 
    def searchLoginById(self):
       try:
-         self.db.cursor.execute(f'select id, username, password, idPersona, idRol from login where id="{self.id}"')
+         self.db.cursor.execute(f'select idUsuario, nombre_usuario, contrasena, idPersona, idRoles from Login where idUsuario="{self.id}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -72,7 +72,7 @@ class Login():
 
 
    def selectLogin(self):
-      self.db.cursor.execute('select id, username, password, idPersona, idRol from login')
+      self.db.cursor.execute('select idUsuario, nombre_usuario, contrasena, idPersona, idRoles from Login')
       data = self.db.cursor.fetchall()
       dicDatos = {}
       listaDatos = []
@@ -85,7 +85,7 @@ class Login():
 
    def insertLogin(self):
       try:
-         self.db.cursor.execute(f'insert into login(username, password, idPersona, idRol) values("{self.username}","{self.password}",{self.idPersona},{self.idRol})')
+         self.db.cursor.execute(f'insert into Login(nombre_usuario, contrasena, idPersona, idRoles) values("{self.username}","{self.password}",{self.idPersona},{self.idRol})')
          self.db.cursor.execute("commit;")
          self.searchLogin()
          return True
@@ -95,7 +95,7 @@ class Login():
 
    def updateLogin(self):
       try:
-         self.db.cursor.execute(f"update login set username='{self.username}', password='{self.password}', idPersona={self.idPersona}, idRol={self.idRol} where id={self.id}")
+         self.db.cursor.execute(f"update Login set nombre_usuario='{self.username}', contrasena='{self.password}', idPersona={self.idPersona}, idRoles={self.idRol} where idLogin={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -104,7 +104,7 @@ class Login():
 
    def deleteLogin(self):
       try:
-         self.db.cursor.execute(f"delete from login where id='{self.id}'")
+         self.db.cursor.execute(f"delete from Login where idUsuario={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
