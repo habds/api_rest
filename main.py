@@ -134,6 +134,7 @@ def comuna(nombre_comuna):
     com = Comuna(nombre=nombre_comuna)
     if com.getComuna():
         return jsonify({'message': 'Exitosamente', 'Comuna': com.dic()})
+        
     else:
         return jsonify({"message":f'No existe ninguna comuna con el nombre {nombre_comuna}'})
 
