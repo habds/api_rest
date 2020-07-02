@@ -146,7 +146,7 @@ class Persona():
 
    def insertPersona(self):
       try:
-         self.db.cursor.execute(f'insert into Persona(run, dv, nombres, apellido_paterno, apellido_materno, correo, telefono, telefono2, telefono3, idCiudad, idGenero) values("{self.run}","{self.dv}","{self.nombres}","{self.a_paterno}","{self.a_materno}","{self.correo}","{self.fono}","{self.fono2}","{self.fono3}",{self.idComuna},{self.idGenero})')
+         self.db.cursor.execute(f'insert into Persona(run, dv, nombres, apellido_paterno, apellido_materno, correo, telefono, telefono2, telefono3, idCiudad, idGenero) values("{self.run}","{self.dv}","{self.nombres}","{self.a_paterno}","{self.a_materno}","{self.correo}",{self.fono},{self.fono2},{self.fono3},{self.idComuna},{self.idGenero})')
          self.db.cursor.execute("commit;")
          self.searchPersona()
          return True
@@ -156,7 +156,7 @@ class Persona():
 
    def updatePersona(self):
       try:
-         self.db.cursor.execute(f"update Persona set run='{self.run}', dv='{self.dv}', nombres='{self.nombres}', apellido_paterno='{self.a_paterno}', apellido_materno='{self.a_materno}', correo='{self.correo}', telefono='{self.fono}', telefono2='{self.fono2}', telefono3='{self.fono3}', email='{self.email}', idcomuna={self.idComuna} where idPersona={self.id}")
+         self.db.cursor.execute(f"update Persona set run='{self.run}', dv='{self.dv}', nombres='{self.nombres}', apellido_paterno='{self.a_paterno}', apellido_materno='{self.a_materno}', correo='{self.correo}', telefono={self.fono}, telefono2={self.fono2}, telefono3={self.fono3}, email='{self.email}', idcomuna={self.idComuna} where idPersona={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
