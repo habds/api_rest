@@ -57,7 +57,7 @@ class Login():
 
    def searchLoginById(self):
       try:
-         self.db.cursor.execute(f'select idUsuario, nombre_usuario, contrasena, idPersona, idRoles from Login where id="{self.id}"')
+         self.db.cursor.execute(f'select idUsuario, nombre_usuario, contrasena, idPersona, idRoles from Login where idUsuario="{self.id}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -79,7 +79,7 @@ class Login():
       for registro in data:
          dicDatos = {"id": registro[0], "username": registro[1], 'password': registro[2], "idPersona": registro[3], 'idRol': registro[4]}
          listaDatos.append(dicDatos)
-      result = {'Message': 'Mostrando Datos de login', 'Datos de login': listaDatos}
+      result = listaDatos
       return result
 
 
