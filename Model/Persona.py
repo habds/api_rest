@@ -146,7 +146,7 @@ class Persona():
 
    def insertPersona(self):
       try:
-         self.db.cursor.execute(f'insert into Persona(run, dv, nombres, apellido_paterno, apellido_materno, correo, telefono, telefono2, telefono3, idCiudad, idGenero) values("{self.run}","{self.dv}","{self.nombres}","{self.a_paterno}","{self.a_materno}",{self.correo},"{self.fono}","{self.fono2}","{self.fono3}",{self.idComuna},{self.idGenero})')
+         self.db.cursor.execute(f'insert into Persona(run, dv, nombres, apellido_paterno, apellido_materno, correo, telefono, telefono2, telefono3, idCiudad, idGenero) values("{self.run}","{self.dv}","{self.nombres}","{self.a_paterno}","{self.a_materno}","{self.correo}","{self.fono}","{self.fono2}","{self.fono3}",{self.idComuna},{self.idGenero})')
          self.db.cursor.execute("commit;")
          self.searchPersona()
          return True
