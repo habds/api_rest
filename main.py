@@ -82,7 +82,7 @@ def updateLogin(pId):
 @app.route('/login/<int:pId>', methods=['DELETE'])
 def deleteLogin(pId):
     log = Login(id=pId)
-    if log.searchLoginById():
+    if log.searchLoginbyId():
         if log.deleteLogin():
             return jsonify({
                 'message': 'Los datos para logearse fueron eliminados exitosamente',

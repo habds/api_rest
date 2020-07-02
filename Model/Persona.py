@@ -140,7 +140,7 @@ class Persona():
                      , "a_materno": registro[5], 'correo': registro[6], "fono": registro[7], 'fono2': registro[8]
                      , "fono3": registro[9],'idcomuna': registro[10], 'idGenero': registro[11]}
          listaDatos.append(dicDatos)
-      result = {'Message': 'Mostrando Personas', 'Personas': listaDatos}
+      result = {listaDatos}
       return result
 
 
