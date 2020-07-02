@@ -83,7 +83,7 @@ class Provincia():
       for registro in data:
          dicDatos = {"id": registro[0], "nombre": registro[1], 'idRegion':registro[2]}
          listaDatos.append(dicDatos)
-      result = {'Message': 'Mostrando Provincias', 'Provincias': listaDatos}
+      result = listaDatos
       return result
 
 

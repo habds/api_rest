@@ -112,7 +112,7 @@ class Tienda():
       for registro in data:
          dicDatos = {"id": registro[0], "nombre": registro[1],"direccion":registro[2], "email":registro[3],"telefono":registro[4], "Estatus" : registro[5] ,"idComuna":registro[6],"idTipoTienda":registro[7]}
          listaDatos.append(dicDatos)
-      result = {'Message': 'Mostrando las tiendas', 'Tiendas': listaDatos}
+      result = listaDatos
       return result
 
 

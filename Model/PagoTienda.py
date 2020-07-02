@@ -50,7 +50,7 @@ class PagoTienda():
       for registro in data:
          dicDatos = {"idPago tienda": registro[0], "id tienda": registro[1] , "id Metodo pago": registro[2]}
          listaDatos.append(dicDatos)
-      result = {'Message': 'Mostrando pagos de tienda', 'Pago de tienda': listaDatos}
+      result = listaDatos
       return result
 
 

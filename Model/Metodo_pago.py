@@ -43,7 +43,7 @@ class Metodo_pago():
       for registro in data:
          dicDatos = {"id": registro[0], "nombre": registro[1]}
          listaDatos.append(dicDatos)
-      result = {'Message': 'Mostrando Metodos de pago', 'Metodo de pago': listaDatos}
+      result = listaDatos
       return result
 
 

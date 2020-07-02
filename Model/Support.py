@@ -61,7 +61,7 @@ class Support():
       for registro in data:
          dicDatos = {"id": registro[0], "estatus": registro[1], "codigo" : registro[2], "idTicket" : registro[3]}
          listaDatos.append(dicDatos)
-      result = {'Message': 'Mostrando Support', 'Support': listaDatos}
+      result = listaDatos
       return result
 
 

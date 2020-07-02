@@ -43,7 +43,7 @@ class Categoria():
       for registro in data:
          dicDatos = {"id": registro[0], "nombre": registro[1]}
          listaDatos.append(dicDatos)
-      result = {'Message': 'Mostrando Categoria', 'Categoria': listaDatos}
+      result = listaDatos
       return result
 
    def setCategoria(self):

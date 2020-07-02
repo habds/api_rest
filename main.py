@@ -127,16 +127,16 @@ def token_required(ƒ):
 
 
 
-#------------------------------------Comunas-------------------------------------------------------------
+#------------------------------------Comuna-------------------------------------------------------------
 @app.route('/comuna/<string:nombre_comuna>', methods=['GET'])
 
 def comuna(nombre_comuna):
     com = Comuna(nombre=nombre_comuna)
     if com.getComuna():
-        return jsonify({'message': 'Exitosamente', 'Comuna': com.dic()})
+        return jsonify(com.dic())
         
     else:
-        return jsonify({"message":f'No existe ninguna comuna con el nombre {nombre_comuna}'})
+        return jsonify({"Message":f'No existe ninguna comuna con el nombre {nombre_comuna}'})
 
 
 @app.route('/comuna/', methods=['GET'])
@@ -156,9 +156,9 @@ def addComuna():
     #tokenope = request.json['token']
     com = Comuna(nombre=request.json['nombre'], idProvincia=request.json['idProvincia'])
     if com.setComuna():
-        return jsonify({'message':'Comuna creada exitosamente', 'Comuna': com.dic()})
+        return jsonify(com.dic())
     else:
-        return jsonify({'message':'Ha ocurrido un error al intentar crear la Comuna'})
+        return jsonify({'Message':'Ha ocurrido un error al intentar crear la Comuna'})
 
 @app.route('/comuna/<string:nombre_comuna>', methods=['PUT'])
 def updateComuna(nombre_comuna):
@@ -167,9 +167,9 @@ def updateComuna(nombre_comuna):
         com.setNombre(request.json['nombre'])
         com.setIdProvincia(request.json['idProvincia'])
         if com.updateComuna():
-            return jsonify({'message':'Comuna Actualizada Exitosamente', 'Comuna':com.dic()})
+            return jsonify(com.dic())
         else:
-            return jsonify({'message':'Ha ocurrido un error al intentar actualizar la Comuna'})
+            return jsonify({'Message':'Ha ocurrido un error al intentar actualizar la Comuna'})
 
 
 @app.route('/comuna/<string:nombre_comuna>', methods=['DELETE'])
@@ -177,14 +177,11 @@ def deleteComuna(nombre_comuna):
     com = Comuna(nombre=nombre_comuna)
     if com.getComuna():
         if com.deleteComuna():
-            return jsonify({
-                'message': 'La comuna fue eliminada exitosamente',
-                'Comuna': com.dic()
-            })
+            return jsonify(com.dic())
         else:
-            return jsonify({'message':f'No ha sido posible eliminar la comuna {nombre_comuna}'})
+            return jsonify({'Message':f'No ha sido posible eliminar la comuna {nombre_comuna}'})
     else:
-        return jsonify({'message':'No se encontro ninguna comuna para eliminar'})
+        return jsonify({'Message':'No se encontro ninguna comuna para eliminar'})
 
 
 
@@ -197,9 +194,9 @@ def deleteComuna(nombre_comuna):
 def region(nombre_region):
     reg = Region(nombre=nombre_region)
     if reg.getRegion():
-        return jsonify({'message': 'Exitosamente', 'Region': reg.dic()})
+        return jsonify(reg.dic())
     else:
-        return jsonify({"message":f'No existe ninguna region con el nombre {nombre_region}'})
+        return jsonify({"Message":f'No existe ninguna region con el nombre {nombre_region}'})
 
 @app.route('/region/', methods=['GET'])
 # @token_required
@@ -211,9 +208,9 @@ def regiones():
 def addRegion():
     reg = Region(nombre=request.json['nombre'])
     if reg.setRegion():
-        return jsonify({'message':'Region creada exitosamente', 'Region': reg.dic()})
+        return jsonify(reg.dic())
     else:
-        return jsonify({'message':'Ha ocurrido un error al intentar crear la Region'})
+        return jsonify({'Message':'Ha ocurrido un error al intentar crear la Region'})
 
 @app.route('/region/<string:nombre_region>', methods=['PUT'])
 def updateRegion(nombre_region):
@@ -221,9 +218,9 @@ def updateRegion(nombre_region):
     if reg.getRegion():
         reg.setNombre(request.json['nombre'])
         if reg.updateRegion():
-            return jsonify({'message':'Region Actualizada Exitosamente', 'Region':reg.dic()})
+            return jsonify(reg.dic())
         else:
-            return jsonify({'message':'Ha ocurrido un error al intentar actualizar la Region'})
+            return jsonify({'Message':'Ha ocurrido un error al intentar actualizar la Region'})
 
 
 @app.route('/region/<string:nombre_region>', methods=['DELETE'])
@@ -231,14 +228,11 @@ def deleteRegion(nombre_region):
     reg = Region(nombre=nombre_region)
     if reg.getRegion():
         if reg.deleteRegion():
-            return jsonify({
-                'message': 'La region fue eliminada exitosamente',
-                'Region': reg.dic()
-            })
+            return jsonify(reg.dic())
         else:
-            return jsonify({'message':'No ha sido posible eliminar la region'})
+            return jsonify({'Message':'No ha sido posible eliminar la region'})
     else:
-        return jsonify({'message':'No se encontro ninguna region para eliminar'})
+        return jsonify({'Message':'No se encontro ninguna region para eliminar'})
 
 #------------------------------------Producto-------------------------------------------------------------
 
@@ -299,7 +293,7 @@ def deleteProducto(id_producto):
 def categoria(nombre_categoria):
     cat = Categoria(nombre=nombre_categoria)
     if cat.getCategoria():
-        return jsonify({'message': 'Exitosamente', 'Region': cat.dic()})
+        return jsonify(cat.dic())
     else:
         return jsonify({"message":f'No existe ninguna region con el nombre {nombre_categoria}'})
 
@@ -312,9 +306,9 @@ def categorias():
 def addCategoria():
     cat = Categoria(nombre=request.json['nombre'])
     if cat.setCategoria():
-        return jsonify({'message':'Categoria creada exitosamente', 'Categoria': cat.dic()})
+        return jsonify(cat.dic())
     else:
-        return jsonify({'message':'Ha ocurrido un error al intentar crear la Categoria'})
+        return jsonify({'Message':'Ha ocurrido un error al intentar crear la Categoria'})
 
 @app.route('/categoria/<string:nombre_categoria>', methods=['PUT'])
 def updateCategoria(nombre_categoria):
@@ -322,7 +316,7 @@ def updateCategoria(nombre_categoria):
     if cat.getCategoria():
         cat.setNombre(request.json['nombre'])
         if cat.updateCategoria():
-            return jsonify({'message':'Categoria Actualizada Exitosamente', 'Categoria':cat.dic()})
+            return jsonify(cat.dic())
         else:
             return jsonify({'message':'Ha ocurrido un error al intentar actualizar la Categoria'})
 
@@ -332,10 +326,7 @@ def deleteCategoria(nombre_categoria):
     cat = Categoria(nombre=nombre_categoria)
     if cat.getCategoria():
         if cat.deleteCategoria():
-            return jsonify({
-                'Message': 'La categoria fue eliminada exitosamente',
-                'Categoria': cat.dic()
-            })
+            return jsonify(cat.dic())
         else:
             return jsonify({'Message':'No ha sido posible eliminar la categoria'})
     else:
@@ -347,9 +338,9 @@ def deleteCategoria(nombre_categoria):
 def provincia(nombre_provincia):
     pro = Provincia(nombre=nombre_provincia)
     if pro.getProvincia():
-        return jsonify({'message': 'Exitosamente', 'Provincia': pro.dic()})
+        return jsonify(pro.dic())
     else:
-        return jsonify({"message":f'No existe ninguna provincia con el nombre {nombre_provincia}'})
+        return jsonify({"Message":f'No existe ninguna provincia con el nombre {nombre_provincia}'})
 
 @app.route('/provincia/', methods=['GET'])
 def provincias():
@@ -364,9 +355,9 @@ def provincias():
 def addProvincia():
     pro = Provincia(nombre=request.json['nombre'], idRegion=request.json['idRegion'])
     if pro.setProvincia():
-        return jsonify({'message':'Provincia creada exitosamente', 'Provincia': pro.dic()})
+        return jsonify(pro.dic())
     else:
-        return jsonify({'message':'Ha ocurrido un error al intentar crear la Provincia'})
+        return jsonify({'Message':'Ha ocurrido un error al intentar crear la Provincia'})
 
 @app.route('/provincia/<string:nombre_provincia>', methods=['PUT'])
 def updateProvincia(nombre_provincia):
@@ -375,7 +366,7 @@ def updateProvincia(nombre_provincia):
         pro.setNombre(request.json['nombre'])
         pro.setIdregion(request.json['idRegion'])
         if pro.updateProvincia():
-            return jsonify({'message':'Provincia Actualizada Exitosamente', 'Provincia':pro.dic()})
+            return jsonify(pro.dic())
         else:
             return jsonify({'message':'Ha ocurrido un error al intentar actualizar la Provincia'})
 
@@ -384,10 +375,7 @@ def deleteProvincia(nombre_provincia):
     pro = Provincia(nombre=nombre_provincia)
     if pro.getProvincia():
         if pro.deleteProvincia():
-            return jsonify({
-                'message': 'La provincia fue eliminada exitosamente',
-                'Region': pro.dic()
-            })
+            return jsonify(pro.dic())
         else:
             return jsonify({'message':'No ha sido posible eliminar la region'})
     else:
@@ -399,9 +387,9 @@ def deleteProvincia(nombre_provincia):
 def tiendaTipo(pDescr):
     tie = TiendaTipo(descripcion=pDescr)
     if tie.getTiendaTipo():
-        return jsonify({'message': 'Exitosamente', 'Tienda Tipo': tie.dic()})
+        return jsonify(tie.dic())
     else:
-        return jsonify({"message":f'No existe ningun tipo de tienda con ese nombre {pDescr}'})
+        return jsonify({"Message":f'No existe ningun tipo de tienda con ese nombre {pDescr}'})
 
 @app.route('/tiendatipo/', methods=['GET'])
 def tiendaTipos():
@@ -412,9 +400,9 @@ def tiendaTipos():
 def addTiendaTipo():
     tie = TiendaTipo(descripcion=request.json['descripcion'])
     if tie.createTiendaTipo():
-        return jsonify({'message':'Tipo de tienda creada exitosamente', 'TiendaTipo': tie.dic()})
+        return jsonify(tie.dic())
     else:
-        return jsonify({'message':'Ha ocurrido un error al intentar crear el Tipo de tienda'})
+        return jsonify({'Message':'Ha ocurrido un error al intentar crear el Tipo de tienda'})
 
 @app.route('/tiendatipo/<string:pDesc>', methods=['PUT'])
 def updateTiendaTipo(pDesc):
@@ -422,18 +410,16 @@ def updateTiendaTipo(pDesc):
     if tie.getTiendaTipo():
         tie.setDescripcion(request.json['descripcion'])
         if tie.updateTiendaTipo():
-            return jsonify({'message':'Tienda tipo Actualizada Exitosamente', 'Tienda Tipo':tie.dic()})
+            return jsonify(tie.dic())
         else:
-            return jsonify({'message':'Ha ocurrido un error al intentar actualizar la Tienda tipo'})
+            return jsonify({'Message':'Ha ocurrido un error al intentar actualizar la Tienda tipo'})
 
 @app.route('/tiendatipo/<string:pDesc>', methods=['DELETE'])
 def deleteTiendaTipo(pDesc):
     tie = TiendaTipo(descripcion=pDesc)
     if tie.getTiendaTipo():
         if tie.deleteTiendaTipo():
-            return jsonify({
-                'Message': 'El Tipo de tienda fue eliminada exitosamente','Tienda Tipo': tie.dic()
-            })
+            return jsonify(tie.dic())
         else:
             return jsonify({'Message':'No ha sido posible eliminar el tipo de tienda '})
     else:
@@ -447,9 +433,9 @@ def deleteTiendaTipo(pDesc):
 def tienda(pNombre):
     tie = Tienda(nombre=pNombre)
     if tie.selectTienda():
-        return jsonify({'message': 'Exitosamente', 'Tienda': tie.dic()})
+        return jsonify(tie.dic())
     else:
-        return jsonify({"message":f'No existe ninguna provincia con el nombre {pNombre}'})
+        return jsonify({"Message":f'No existe ninguna provincia con el nombre {pNombre}'})
 
 @app.route('/tienda/', methods=['GET'])
 def tiendas():
@@ -460,9 +446,9 @@ def tiendas():
 def addTienda():
     tie = Tienda(nombre=request.json['nombre'], direccion=request.json['direccion'], email=request.json['email'], telefono=request.json['telefono'],idComuna=request.json['idComuna'], idTipoTienda=request.json['idTipoTienda'])
     if tie.createTienda():
-        return jsonify({'message':'Tienda creada exitosamente', 'Tienda': tie.dic()})
+        return jsonify(tie.dic())
     else:
-        return jsonify({'message':'Ha ocurrido un error al intentar crear la Tienda'})
+        return jsonify({'Message':'Ha ocurrido un error al intentar crear la Tienda'})
 
 @app.route('/tienda/<string:pNombre>', methods=['PUT'])
 def updateTienda(pNombre):
@@ -475,22 +461,20 @@ def updateTienda(pNombre):
         tie.setIdComuna(int(request.json['idComuna']))
         tie.setIdtipotienda(int(request.json['idTipoTienda']))
         if tie.updateTiendaTipo():
-            return jsonify({'message':'Tienda actualizada Exitosamente', 'Tienda':tie.dic()})
+            return jsonify(tie.dic())
         else:
-            return jsonify({'message':'Ha ocurrido un error al intentar actualizar la Tienda'})
+            return jsonify({'Message':'Ha ocurrido un error al intentar actualizar la Tienda'})
 
 @app.route('/tienda/<string:pNombre>', methods=['DELETE'])
 def deleteTienda(pNombre):
     tie = Tienda(nombre=pNombre)
     if tie.selectTienda():
         if tie.deleteTienda():
-            return jsonify({
-                'message': 'El Tipo de tienda fue eliminada exitosamente','Tienda': tie.dic()
-            })
+            return jsonify(tie.dic())
         else:
-            return jsonify({'message':'No ha sido posible eliminar la tienda '})
+            return jsonify({'Message':'No ha sido posible eliminar la tienda '})
     else:
-        return jsonify({'message':'No se encontro ninguna tienda para eliminar'})
+        return jsonify({'Message':'No se encontro ninguna tienda para eliminar'})
 
 #-------------------------fin tienda---------------------------------------------------------
 
@@ -708,7 +692,7 @@ def deletePersona(pRun):
 def metodoPago(pNombre):
     met = Metodo_pago(nombre=pNombre)
     if met.searchMetodoPago():
-        return jsonify({'Message': 'Metodo de pago encontrada exitosamente', 'Metodo de pago': met.dic()})
+        return jsonify(met.dic())
     else:
         return jsonify({"Message":f'No existe ninguna metodo de pago con el nombre {pNombre}'})
 
@@ -721,9 +705,9 @@ def metodosPagos():
 def addMetodoPago():
     met = Metodo_pago(nombre=request.json['nombre'])
     if met.insertMetodoPago():
-        return jsonify({'message':'Metodo de pago agregado exitosamente', 'Metodo de pago': met.dic()})
+        return jsonify(met.dic())
     else:
-        return jsonify({'message':'Ha ocurrido un error al intentar agregar el metodo de pago'})
+        return jsonify({'Message':'Ha ocurrido un error al intentar agregar el metodo de pago'})
 
 @app.route('/metodopago/<string:pNombre>', methods=['PUT'])
 def updateMetodooPago(pNombre):
@@ -731,7 +715,7 @@ def updateMetodooPago(pNombre):
     if met.searchMetodoPago():
         met.setNombre(request.json['nombre'])
         if met.updateMetodoPago():
-            return jsonify({'Message':'Datos del metodo de pago han sido actualizados Exitosamente', 'metodo de pago':met.dic()})
+            return jsonify(met.dic())
         else:
             return jsonify({'Message':'Ha ocurrido un error al intentar actualizar el metodo de pago'})
     else:
@@ -742,20 +726,18 @@ def deleteMetodoPago(pNombre):
     met = Metodo_pago(nombre=pNombre)
     if met.searchMetodoPago():
         if met.deleteMetodoPago():
-            return jsonify({
-                'Message': 'Los datos del metodo de pago fueron eliminados exitosamente','Metodo de pago': met.dic()
-            })
+            return jsonify(met.dic())
         else:
-            return jsonify({'message':'No ha sido posible eliminar los datos del metodo de pago'})
+            return jsonify({'Message':'No ha sido posible eliminar los datos del metodo de pago'})
     else:
-        return jsonify({'message':'No se encontraron datos del metodo de pago'})
+        return jsonify({'Message':'No se encontraron datos del metodo de pago'})
 #---------------------------------------fin metodo pago---------------------------------------------
 #-------------------------------------PAGO TIENDA-----------------------------------------------------
 @app.route('/pagotienda/<int:pId>', methods=['GET'])
 def pagotienda(pId):
     pag = PagoTienda(id=pId)
     if pag.searchPagoTienda():
-        return jsonify({'Message': 'Pago de tienda encontrado exitosamente', 'Pago de tienda': pag.dic()})
+        return jsonify(pag.dic())
     else:
         return jsonify({"Message":f'No existe ningun pago de tienda con el id {pId}'})
 
@@ -768,7 +750,7 @@ def pagostienda():
 def addPagoTienda():
     pag = PagoTienda(idTienda=request.json['idtienda'], idMetodoPago = request.json['idmetodopago'])
     if pag.insertPagoTienda():
-        return jsonify({'Message':'Pago tienda agregado exitosamente', 'Pago tienda': pag.dic()})
+        return jsonify(pag.dic())
     else:
         return jsonify({'Message':'Ha ocurrido un error al intentar agregar el pago tienda'})
 
@@ -779,7 +761,7 @@ def updatePagoTienda(pId):
         pag.setIdtienda(request.json['idtienda'])
         pag.setIdmetodopago(request.json['idmetodopago'])
         if pag.updatePagoTienda():
-            return jsonify({'Message':'El pago tienda ha sido actualizado Exitosamente', 'Pago tienda':pag.dic()})
+            return jsonify(pag.dic())
         else:
             return jsonify({'Message':'Ha ocurrido un error al intentar actualizar el pago tienda'})
     else:
@@ -790,9 +772,7 @@ def deletePagoTienda(pId):
     pag = PagoTienda(id=pId)
     if pag.searchPagoTienda():
         if pag.deletePagoTienda():
-            return jsonify({
-                'Message': 'Los datos del pago de tienda fueron eliminados exitosamente','Pago de tienda': pag.dic()
-            })
+            return jsonify(pag.dic())
         else:
             return jsonify({'Message':f'No ha sido posible eliminar los pago de tienda con id : {pId}'})
     else:
@@ -805,7 +785,7 @@ def deletePagoTienda(pId):
 def ticket(pId):
     tic = Ticket(id=pId)
     if tic.searchTicket():
-        return jsonify({'Message': 'Ticket encontrado exitosamente', 'ticket': tic.dic()})
+        return jsonify(tic.dic())
     else:
         return jsonify({"Message":f'No existe ningun ticket con el id {pId}'})
 
@@ -818,7 +798,7 @@ def tickes():
 def addTicket():
     tic = Ticket(ticket_abierto=request.json['ticket_abierto'], estado = request.json['estado'])
     if tic.insertTicket():
-        return jsonify({'Message':'Ticket agregado exitosamente', 'Ticket': tic.dic()})
+        return jsonify(tic.dic())
     else:
         return jsonify({'Message':'Ha ocurrido un error al intentar agregar el ticket'})
 
@@ -829,7 +809,7 @@ def updateTicket(pId):
         tic.setTicket_abierto(request.json['ticket_abierto'])
         tic.setEstado(request.json['estado'])
         if tic.updateTicket():
-            return jsonify({'Message':'El ticket ha sido actualizado Exitosamente', 'ticket':tic.dic()})
+            return jsonify(tic.dic())
         else:
             return jsonify({'Message':'Ha ocurrido un error al intentar actualizar el ticket'})
     else:
@@ -840,9 +820,7 @@ def deleteTicket(pId):
     tic = Ticket(id=pId)
     if tic.searchTicket():
         if tic.deleteTicket():
-            return jsonify({
-                'Message': 'Los datos del ticket fueron eliminados exitosamente','Ticket': tic.dic()
-            })
+            return jsonify(tic.dic())
         else:
             return jsonify({'Message':f'No ha sido posible eliminar el ticket con id : {pId}'})
     else:
@@ -855,7 +833,7 @@ def deleteTicket(pId):
 def support(pId):
     sup = Support(id=pId)
     if sup.searchSup():
-        return jsonify({'Message': 'Support encontrado exitosamente', 'Support': sup.dic()})
+        return jsonify(sup.dic())
     else:
         return jsonify({"Message":f'No existe ningun ticket con el id {pId}'})
 
@@ -868,7 +846,7 @@ def supports():
 def addSupport():
     sup = Support(estatus=request.json['estatus'], codigo = request.json['codigo'], idTicket = request.json['idticket'])
     if sup.insertSup():
-        return jsonify({'Message':'Support agregado exitosamente', 'Support': sup.dic()})
+        return jsonify(sup.dic())
     else:
         return jsonify({'Message':'Ha ocurrido un error al intentar agregar el ticket'})
 
@@ -880,7 +858,7 @@ def updateSupport(pId):
         sup.setCodigo(request.json['codigo'])
         sup.setIdTicket(request.json['idticket'])
         if sup.updateSup():
-            return jsonify({'Message':'Support ha sido actualizado Exitosamente', 'Support':sup.dic()})
+            return jsonify(sup.dic())
         else:
             return jsonify({'Message':'Ha ocurrido un error al intentar actualizar el support'})
     else:
@@ -891,9 +869,7 @@ def deleteSupport(pId):
     sup = Support(id=pId)
     if sup.searchSup():
         if sup.deleteSup():
-            return jsonify({
-                'Message': 'Los datos del support fueron eliminados exitosamente','Support': sup.dic()
-            })
+            return jsonify(sup.dic())
         else:
             return jsonify({'Message':f'No ha sido posible eliminar el ticket con id : {pId}'})
     else:
@@ -905,7 +881,7 @@ def deleteSupport(pId):
 def publicidad(pId):
     pub = Publicidad(id=pId)
     if pub.search():
-        return jsonify({'Message': 'Publicidad encontrada exitosamente', 'Publicidad': pub.dic()})
+        return jsonify(pub.dic())
     else:
         return jsonify({"Message":f'No existe ninguna publicidad con el id: {pId}'})
 
@@ -918,7 +894,7 @@ def publicidades():
 def addPublicidad():
     pub = Publicidad(f_inicio=request.json['inicio'], f_termino = request.json['termino'], compania = request.json['nombre'])
     if pub.insert():
-        return jsonify({'Message':'Publicidad agregada exitosamente', 'Publicidad': pub.dic()})
+        return jsonify(pub.dic())
     else:
         return jsonify({'Message':'Ha ocurrido un error al intentar agregar la publicidad'})
 
@@ -930,7 +906,7 @@ def updatePublicidad(pId):
         pub.setF_termino(request.json['termino'])
         pub.setCompania(request.json['nombre'])
         if pub.update():
-            return jsonify({'Message':'La publicidad ha sido actualizada Exitosamente', 'Publicidad':pub.dic()})
+            return jsonify(pub.dic())
         else:
             return jsonify({'Message':'Ha ocurrido un error al intentar actualizar la publicidad'})
     else:
@@ -941,9 +917,7 @@ def deletePublicidad(pId):
     pub = Publicidad(id=pId)
     if pub.search():
         if pub.delete():
-            return jsonify({
-                'Message': 'Los datos de la publicidad fueron eliminados exitosamente','Publicidad': pub.dic()
-            })
+            return jsonify(pub.dic())
         else:
             return jsonify({'Message':f'No ha sido posible eliminar la publicidad con id : {pId}'})
     else:
