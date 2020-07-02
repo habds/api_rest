@@ -42,11 +42,7 @@ class Login():
  
    def searchLogin(self):
       try:
-<<<<<<< HEAD
-         self.db.cursor.execute(f'select idUsuario, nombre_usuario, password, idPersona, idRoles from Login where username="{self.username}" and password="{self.password}"')
-=======
          self.db.cursor.execute(f'select idUsuario, nombre_usuario, contrasena, idPersona, idRoles from Login where nombre_usuario="{self.username}" and contrasena="{self.password}"')
->>>>>>> c22f8cbb16c2225b61c3add0375ff6bcaa33340f
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -61,11 +57,7 @@ class Login():
 
    def searchLoginById(self):
       try:
-<<<<<<< HEAD
-         self.db.cursor.execute(f'select idUsuario, nombre_usuario, contrasena, idPersona, idRoles from Login where idUsuario="{self.id}"')
-=======
          self.db.cursor.execute(f'select idUsuario, nombre_usuario, contrasena, idPersona, idRoles from Login where id="{self.id}"')
->>>>>>> c22f8cbb16c2225b61c3add0375ff6bcaa33340f
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -103,11 +95,7 @@ class Login():
 
    def updateLogin(self):
       try:
-<<<<<<< HEAD
-         self.db.cursor.execute(f"update Login set nombre_usuario='{self.username}', contrasena='{self.password}', idPersona={self.idPersona}, idRoles={self.idRol} where idLogin={self.id}")
-=======
          self.db.cursor.execute(f"update Login set nombre_usuario='{self.username}', contrasena='{self.password}', idPersona={self.idPersona}, idRoles={self.idRol} where idUsuario={self.id}")
->>>>>>> c22f8cbb16c2225b61c3add0375ff6bcaa33340f
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
@@ -116,11 +104,7 @@ class Login():
 
    def deleteLogin(self):
       try:
-<<<<<<< HEAD
-         self.db.cursor.execute(f"delete from Login where idUsuario={self.id}")
-=======
          self.db.cursor.execute(f"delete from Login where idUsuario='{self.id}'")
->>>>>>> c22f8cbb16c2225b61c3add0375ff6bcaa33340f
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
