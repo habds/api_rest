@@ -96,11 +96,11 @@ class Persona():
             self.setA_paterno(obj[4])
             self.setA_materno(obj[5])
             self.setEmail(obj[6])
-            self.setFono(obj[8])
-            self.setFono2(obj[9])
-            self.setFono3(obj[10])
-            self.setIdcomuna(obj[11])
-            self.setIdgenero(obj[12])
+            self.setFono(obj[7])
+            self.setFono2(obj[8])
+            self.setFono3(obj[9])
+            self.setIdcomuna(obj[10])
+            self.setIdgenero(obj[11])
             
             return True
       except mysql.connector.Error as err:
@@ -119,11 +119,11 @@ class Persona():
             self.setA_paterno(obj[4])
             self.setA_materno(obj[5])
             self.setEmail(obj[6])
-            self.setFono(obj[8])
-            self.setFono2(obj[9])
-            self.setFono3(obj[10])
-            self.setIdcomuna(obj[11])
-            self.setIdgenero(obj[12])
+            self.setFono(obj[7])
+            self.setFono2(obj[8])
+            self.setFono3(obj[9])
+            self.setIdcomuna(obj[10])
+            self.setIdgenero(obj[11])
             return True
       except mysql.connector.Error as err:
          print(err)
