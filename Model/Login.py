@@ -79,7 +79,7 @@ class Login():
       for registro in data:
          dicDatos = {"id": registro[0], "username": registro[1], 'password': registro[2], "idPersona": registro[3], 'idRol': registro[4]}
          listaDatos.append(dicDatos)
-      result = {'Message': 'Mostrando Datos de login', 'Datos de login': listaDatos}
+      result = listaDatos
       return result
 
 
