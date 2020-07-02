@@ -49,7 +49,7 @@ class Comuna():
       for registro in data:
          dicDatos = {"id": registro[0], "nombre": registro[1], 'idProvincia': registro[2]}
          listaDatos.append(dicDatos)
-      result = {'Message': 'Mostrando Comunas', 'Comunas': listaDatos}
+      result = listaDatos
       return result
 
 

@@ -41,7 +41,7 @@ class Report_type():
 
    def getReportType(self):
       try:
-         self.db.cursor.execute(f'select idReport_Type, desc, area, area_code from Report_Type where idReport_Type="{self.id}"')
+         self.db.cursor.execute(f'select idReport_Type, descr, area, area_code from Report_Type where idReport_Type="{self.id}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
@@ -54,21 +54,22 @@ class Report_type():
 
 
    def getReportTypes(self):
-      self.db.cursor.execute('select idReport_Type, desc, area, area_code from Report_Type')
-      data = self.db.cursor.fetchall()
-      dicDatos = {}
-      listaDatos = []
-
-      for registro in data:
-         dicDatos = {"id": registro[0], "descripcion": registro[1], 'area': registro[2], 'area_code': registro[3]}
-         listaDatos.append(dicDatos)
-      result = {'Message': 'Mostrando Report Types', 'Report Types': listaDatos}
-      return result
-
+      try:
+         self.db.cursor.execute('select idReport_Type, descr, area, area_code from Report_Type')
+         data = self.db.cursor.fetchall()
+         dicDatos = {}
+         listaDatos = []
+         for registro in data:
+            dicDatos = {"id": registro[0], "descripcion": registro[1], 'area': registro[2], 'area_code': registro[3]}
+            listaDatos.append(dicDatos)
+         result = {'Message': 'Mostrando Report Types', 'Report Types': listaDatos}
+         return result
+      except mysql.connector.Error as err:
+         print("Ha ocurrido un error: {}".format(err))
 
    def setReportType(self):
       try:
-         self.db.cursor.execute(f'insert into Report_Type(desc, area, area_code) values("{self.descripcion}", "{self.area}", "{self.area_code}")')
+         self.db.cursor.execute(f'insert into Report_Type(descr, area, area_code) values("{self.descripcion}", "{self.area}", "{self.area_code}")')
          self.db.cursor.execute("commit;")
          self.getSexo()
          return True
@@ -78,7 +79,7 @@ class Report_type():
 
    def updateReportType(self):
       try:
-         self.db.cursor.execute(f"update Report_Type set desc='{self.descripcion}', area='{self.area}', area_code='{self.area_code}' where idReport_Type={self.id}")
+         self.db.cursor.execute(f"update Report_Type set descr='{self.descripcion}', area='{self.area}', area_code='{self.area_code}' where idReport_Type={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:

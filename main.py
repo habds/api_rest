@@ -23,6 +23,8 @@ from Model.Support import Support
 from Model.Publicidad import Publicidad
 from Model.Report_type import Report_type
 from Model.Report import Report
+from Model.Usr_comment import Usr_comment
+from Model.Usr_msg import USR_MSG
 
 import jwt
 import datetime
@@ -132,6 +134,7 @@ def comuna(nombre_comuna):
     com = Comuna(nombre=nombre_comuna)
     if com.getComuna():
         return jsonify({'message': 'Exitosamente', 'Comuna': com.dic()})
+        
     else:
         return jsonify({"message":f'No existe ninguna comuna con el nombre {nombre_comuna}'})
 
@@ -507,7 +510,7 @@ def roles():
 
 @app.route('/rol/', methods=['POST'])
 def addRol():
-    rol = Rol(nombre=request.json['nombre'], codigo=request.json['codigo'])
+    rol = Rol(nombre=request.json['nombre'])
     if rol.insertRol():
         return jsonify({'message':'Rol creado exitosamente', 'Rol': rol.dic()})
     else:
@@ -518,7 +521,6 @@ def updateRol(pNombre):
     rol = Rol(nombre=pNombre)
     if rol.searchRol():
         rol.setNombre(request.json['nombre'])
-        rol.setCodigo(request.json['codigo'])
         
         if rol.updateRol():
             return jsonify({'message':'Rol actualizado Exitosamente', 'Rol':rol.dic()})
@@ -1067,5 +1069,129 @@ def deleteReporte(idreport):
 
 
 #------------------------------------Fin Report-------------------------------------------------------------
+
+#------------------------------------USR_Comentario-------------------------------------------------------------
+
+@app.route('/comentario/<int:idcomentario>', methods=['GET'])
+
+def comentario(idcomentario):
+    comentario = Usr_comment(id=idcomentario)
+    if comentario.getUSR_Comentario():
+        return jsonify({'message': 'Exitosamente', 'Comentario': comentario.dic()})
+    else:
+        return jsonify({"message":f'No existe ningun Comentario con el id {idcomentario}'})
+
+
+@app.route('/comentario/', methods=['GET'])
+# @token_required
+def comentarios():
+    comentario = Usr_comment()
+    return jsonify(comentario.getUSR_Comentarios())
+
+@app.route('/comentario/', methods=['POST'])
+#@token_required
+def addComentario():
+    comentario = Usr_comment(descripcion=request.json['descripcion'], estatus=request.json['estatus'], idUSR_MSG=request.json['idUsr_msg'])
+    if comentario.setUSR_Comentario():
+        return jsonify({'message':'Comentario creado exitosamente', 'Comentario': comentario.dic()})
+    else:
+        return jsonify({'message':'Ha ocurrido un error al intentar crear el comentario'})
+
+@app.route('/comentario/<int:idcomentario>', methods=['PUT'])
+def updateComentario(idcomentario):
+    comentario = Usr_comment(id=idcomentario)
+    if comentario.getUSR_Comentario():
+        comentario.setDescripcion(request.json['descripcion'])
+        comentario.setEstatus(request.json['estatus'])
+        comentario.idUSR_MSG = request.json['idUsr_msg']
+        if comentario.updateUSR_Comentario():
+            return jsonify({'message':'Comentario Actualizado Exitosamente', 'Comentario':comentario.dic()})
+        else:
+            return jsonify({'message':'Ha ocurrido un error al intentar actualizar el comentario'})
+
+
+@app.route('/comentario/<int:idcomentario>', methods=['DELETE'])
+def deleteComentario(idcomentario):
+    comentario = Usr_comment(id=idcomentario)
+    if comentario.getUSR_Comentario():
+        if comentario.deleteUSR_Comentario():
+            return jsonify({
+                'message': 'El Comentario fue eliminado exitosamente',
+                'Comentario': comentario.dic()
+            })
+        else:
+            return jsonify({'message':'No ha sido posible eliminar el comentario'})
+    else:
+        return jsonify({'message':'No se encontro ningun comentario para eliminar'})
+
+
+
+
+#------------------------------------Fin USR_Comentario-------------------------------------------------------------
+
+#------------------------------------Usr_msg-Anuncio-------------------------------------------------------------
+
+@app.route('/anuncio/<int:idanuncio>', methods=['GET'])
+
+def anuncio(idanuncio):
+    anuncio = USR_MSG(idUSR_MSG=idanuncio)
+    if anuncio.getUsr_msg():
+        return jsonify({'message': 'Exitosamente', 'Anuncio': anuncio.dic()})
+    else:
+        return jsonify({"message":f'No existe ningun Anuncio con el id {idanuncio}'})
+
+
+@app.route('/anuncio/', methods=['GET'])
+# @token_required
+def anuncios():
+    anuncio = USR_MSG()
+    return jsonify(anuncio.getUsr_msgs())
+
+@app.route('/anuncio/', methods=['POST'])
+#@token_required
+def addAnuncio():
+    anuncio = USR_MSG(nombre=request.json['nombre'],descripcion=request.json['descripcion'], precio_anuncio=request.json['precio'], estatus=request.json['estatus'], Rate_Container=request.json['Rate_Container'], idRate_MSG=request.json['idRate_MSG'], idProducto=request.json['idProducto'])
+    if anuncio.setUsr_msg():
+        return jsonify({'message':'Anuncio creado exitosamente', 'Anuncio': anuncio.dic()})
+    else:
+        return jsonify({'message':'Ha ocurrido un error al intentar crear el anuncio'})
+
+@app.route('/anuncio/<int:idanuncio>', methods=['PUT'])
+def updateAnuncio(idanuncio):
+    anuncio = USR_MSG(id=idanuncio)
+    if anuncio.getUsr_msg():
+        anuncio.setNombre
+        anuncio.setDescripcion(request.json['descripcion'])
+        anuncio.setPrecio_anuncio(request.json['precio'])
+        anuncio.setEstatus(request.json['estatus'])
+        anuncio.setRate_container('Rate_Container')
+        anuncio.setIdrate_msg(request.json['idRate_MSG'])
+        anuncio.setIdproducto(request.json['idProducto'])
+        if anuncio.updateUsr_msg():
+            return jsonify({'message':'Anuncio Actualizado Exitosamente', 'Anuncio':anuncio.dic()})
+        else:
+            return jsonify({'message':'Ha ocurrido un error al intentar actualizar el anuncio'})
+
+
+@app.route('/anuncio/<int:idanuncio>', methods=['DELETE'])
+def deleteAnuncio(idanuncio):
+    anuncio = USR_MSG(idUSR_MSG=idanuncio)
+    if anuncio.getUsr_msg():
+        if anuncio.deleteUsr_msg():
+            return jsonify({
+                'message': 'El Anuncio fue eliminado exitosamente',
+                'Anuncio': anuncio.dic()
+            })
+        else:
+            return jsonify({'message':'No ha sido posible eliminar el anuncio'})
+    else:
+        return jsonify({'message':'No se encontro ningun anuncio para eliminar'})
+
+
+
+
+#------------------------------------Fin Anuncio-------------------------------------------------------------
+
+
 if __name__ == '__main__':
  app.run(debug=True)
