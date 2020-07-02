@@ -47,8 +47,8 @@ class Persona():
    def setFono3(self,fono3):
       self.fono3 = fono3
  
-   def setEmail(self, email):
-      self.email = email
+   def setEmail(self, correo):
+      self.correo = correo
  
    def setIdcomuna(self, idComuna):
       self.idComuna = idComuna
@@ -156,7 +156,7 @@ class Persona():
 
    def updatePersona(self):
       try:
-         self.db.cursor.execute(f"update Persona set run='{self.run}', dv='{self.dv}', nombres='{self.nombres}', apellido_paterno='{self.a_paterno}', apellido_materno='{self.a_materno}', email='{self.correo}', telefono={self.fono}, telefono2={self.fono2}, telefono3={self.fono3}, email='{self.email}', idcomuna={self.idComuna} where idPersona={self.id}")
+         self.db.cursor.execute(f"update Persona set run='{self.run}', dv='{self.dv}', nombres='{self.nombres}', apellido_paterno='{self.a_paterno}', apellido_materno='{self.a_materno}', correo='{self.correo}', telefono={self.fono}, telefono2={self.fono2}, telefono3={self.fono3}, email='{self.email}', idcomuna={self.idComuna} where idPersona={self.id}")
          self.db.cursor.execute("commit;")
          return True
       except mysql.connector.Error as err:
