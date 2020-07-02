@@ -13,7 +13,7 @@ class Persona():
       self.fono = fono
       self.fono2 = fono2
       self.fono3 = fono3
-      self.idComuna = comuna
+      self.idComuna = idComuna
       self.idGenero = idGenero
       self.db = DataBaseConexion()
  
