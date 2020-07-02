@@ -82,7 +82,7 @@ def updateLogin(pId):
 @app.route('/login/<int:pId>', methods=['DELETE'])
 def deleteLogin(pId):
     log = Login(id=pId)
-    if log.searchLogin():
+    if log.searchLoginById():
         if log.deleteLogin():
             return jsonify({
                 'message': 'Los datos para logearse fueron eliminados exitosamente',
@@ -91,7 +91,7 @@ def deleteLogin(pId):
         else:
             return jsonify({'message':'No ha sido posible eliminar los datos para logearse'})
     else:
-        return jsonify({f'message':'No se encontro ningun dato para eliminar con el id: {pId}'})
+        return jsonify({f'message':f'No se encontro ningun dato para eliminar con el id: {pId}'})
 
 
 @app.route('/token' , methods=['POST'])
