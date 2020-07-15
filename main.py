@@ -77,6 +77,8 @@ def updateLogin(pId):
             return jsonify({'message':'Datos de login actualizados exitosamente', 'login':log.dic()})
         else:
             return jsonify({'message':'Ha ocurrido un error al intentar actualizar los datos de login'})
+    else:
+        return jsonify({'message':f'No se ha encontrado ningun Usuario con el Id {pId}'})
 
 
 @app.route('/login/<int:pId>', methods=['DELETE'])
