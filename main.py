@@ -68,7 +68,7 @@ def addLogin():
 @app.route('/login/<int:pId>', methods=['PUT'])
 def updateLogin(pId):
     log = Login(id=pId)
-    if log.searchLogin():
+    if log.searchLoginById():
         log.setUsername(request.json['username'])
         log.setPassword(request.json['password'])
         log.setIdpersona(request.json['idPersona'])
