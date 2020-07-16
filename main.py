@@ -142,7 +142,7 @@ def comuna(nombre_comuna):
 
 
 @app.route('/comuna/', methods=['GET'])
-@token_required
+#@token_required
 def comunas():
     com = Comuna()
     nombre_p = request.args.get('provincia')
