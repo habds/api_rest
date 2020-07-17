@@ -86,7 +86,7 @@ class Persona():
 
    def searchPersona(self):
       try:
-         self.db.cursor.execute(f'select idPersona, run, dv, nombres, apellido_paterno, apellido_materno, correo, telefono, telefono2, telefono3, idCiudad, idGenero  from Persona where run="{self.run}"')
+         self.db.cursor.execute(f'select idPersona, run, dv, nombres, apellido_paterno, apellido_materno, correo, telefono, telefono2, telefono3, idCiudad, idGenero  from Persona where idPersona="{self.id}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
