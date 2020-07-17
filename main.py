@@ -49,7 +49,7 @@ def login(pId):
     if log.searchLoginById():
         return jsonify({'message': 'Exitosamente', 'Login': log.dic()})
     else:
-        return jsonify({"message":f'No existe ningun sexo con el nombre {pId}'})
+        return jsonify({"message":f'No existe ningun login con el id {pId}'})
 
 @app.route('/login/', methods=['GET'])
 def logins():
