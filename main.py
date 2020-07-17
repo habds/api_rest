@@ -128,7 +128,7 @@ def token_required(ƒ):
 def loginn(pId):
     log = Login(username=pId)
     if log.searchLoginByNombre():
-        return jsonify({'message': 'Exitosamente', 'Login': log.dic()})
+        return jsonify(log.dic())
     else:
         return jsonify({"message":f'No existe ningun sexo con el nombre {pId}'})
 
