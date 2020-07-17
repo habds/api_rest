@@ -72,7 +72,7 @@ class Login():
 
    def searchLoginByNombre(self):
       try:
-         self.db.cursor.execute(f'select idUsuario, nombre_usuario, contrasena, idPersona, idRoles from Login where nombre_usuario={self.username}')
+         self.db.cursor.execute(f'select idUsuario, nombre_usuario, contrasena, idPersona, idRoles from Login where nombre_usuario="{self.username}"')
          obj = self.db.cursor.fetchone()
          if obj != None:
             self.setId(f'{obj[0]}')
