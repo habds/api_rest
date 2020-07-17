@@ -49,7 +49,7 @@ def login(pId):
     if log.searchLoginById():
         return jsonify({'message': 'Exitosamente', 'Login': log.dic()})
     else:
-        return jsonify({"message":f'No existe ningun sexo con el nombre {pId}'})
+        return jsonify({"message":f'No existe ningun login con el id {pId}'})
 
 @app.route('/login/', methods=['GET'])
 def logins():
@@ -68,7 +68,7 @@ def addLogin():
 @app.route('/login/<int:pId>', methods=['PUT'])
 def updateLogin(pId):
     log = Login(id=pId)
-    if log.searchLogin():
+    if log.searchLoginById():
         log.setUsername(request.json['username'])
         log.setPassword(request.json['password'])
         log.setIdpersona(request.json['idPersona'])
@@ -77,6 +77,8 @@ def updateLogin(pId):
             return jsonify({'message':'Datos de login actualizados exitosamente', 'login':log.dic()})
         else:
             return jsonify({'message':'Ha ocurrido un error al intentar actualizar los datos de login'})
+    else:
+        return jsonify({'message':f'No se ha encontrado ningun Usuario con el Id {pId}'})
 
 
 @app.route('/login/<int:pId>', methods=['DELETE'])
@@ -148,7 +150,7 @@ def comuna(nombre_comuna):
 
 
 @app.route('/comuna/', methods=['GET'])
-# @token_required
+#@token_required
 def comunas():
     com = Comuna()
     nombre_p = request.args.get('provincia')
