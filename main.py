@@ -637,11 +637,11 @@ def deleteLogin_detail(pId):
 
 #-------------------------------------   PERSONA --------------------------------------------------
 
-@app.route('/persona/<string:pRun>', methods=['GET'])
+@app.route('/persona/<int:pRun>', methods=['GET'])
 def persona(pRun):
-    per = Persona(run=pRun)
+    per = Persona(id=pRun)
     if per.searchPersona():
-        return jsonify({'message': 'Persona encontrada exitosamente', 'Persona': per.dic()})
+        return jsonify([per.dic()])
     else:
         return jsonify({"message":f'No existe ninguna persona con el nombre {pRun}'})
 
