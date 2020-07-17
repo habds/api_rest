@@ -122,6 +122,14 @@ def token_required(ƒ):
             return jsonify({'message' : 'No hay Token'})
     return decorated
 
+@app.route('/loginn/<string:pId>', methods=['GET'])
+def loginn(pId):
+    log = Login(username=pId)
+    if log.searchLoginByNombre():
+        return jsonify({'message': 'Exitosamente', 'Login': log.dic()})
+    else:
+        return jsonify({"message":f'No existe ningun sexo con el nombre {pId}'})
+
 #--------------------------------------- FIN login-------------------------------------------------
 
 
